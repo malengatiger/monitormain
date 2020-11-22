@@ -17,6 +17,7 @@ class IntroMain extends StatefulWidget {
   _IntroMainState createState() => _IntroMainState();
 }
 
+/// Main Widget that manages a responsive layout for intro pages
 class _IntroMainState extends State<IntroMain> {
   var isBusy = false;
   User user;

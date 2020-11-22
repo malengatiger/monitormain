@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:monitorlibrary/bloc/monitor_bloc.dart';
 import 'package:monitorlibrary/data/user.dart';
 import 'package:monitorlibrary/functions.dart';
 import 'package:monitormain/ui/dashboard/dashboard_desktop.dart';
@@ -31,6 +32,15 @@ class _DashboardMainState extends State<DashboardMain>
     setState(() {
       isBusy = true;
     });
+
+    monitorBloc.getOrganizationProjects(
+        organizationId: widget.user.organizationId);
+    monitorBloc.getOrganizationUsers(
+        organizationId: widget.user.organizationId);
+    monitorBloc.getOrganizationPhotos(
+        organizationId: widget.user.organizationId);
+    monitorBloc.getOrganizationVideos(
+        organizationId: widget.user.organizationId);
   }
 
   @override

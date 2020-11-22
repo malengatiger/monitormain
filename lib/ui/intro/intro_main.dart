@@ -23,7 +23,11 @@ class _IntroMainState extends State<IntroMain> {
   @override
   void initState() {
     super.initState();
-    _checkUser();
+    if (widget.user == null) {
+      _checkUser();
+    } else {
+      user = widget.user;
+    }
   }
 
   void _checkUser() async {

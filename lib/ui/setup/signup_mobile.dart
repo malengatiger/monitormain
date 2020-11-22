@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:monitorlibrary/api/data_api.dart';
 import 'package:monitorlibrary/api/sharedprefs.dart';
 import 'package:monitorlibrary/auth/app_auth.dart';
+import 'package:monitorlibrary/data/country.dart';
 import 'package:monitorlibrary/data/organization.dart';
 import 'package:monitorlibrary/data/user.dart';
 import 'package:monitorlibrary/functions.dart';
@@ -164,7 +165,7 @@ class _SignupMobileState extends State<SignupMobile>
                               width: 24,
                               child: CircularProgressIndicator(
                                 strokeWidth: 8,
-                                backgroundColor: Colors.pink,
+                                backgroundColor: Colors.black,
                               ),
                             )
                           : RaisedButton(
@@ -197,42 +198,13 @@ class _SignupMobileState extends State<SignupMobile>
   var _key = GlobalKey<ScaffoldState>();
   void _submit() async {
     if (_formState.currentState.validate()) {
-      pp('🎽 🎽 🎽 Start submission ......');
+      pp('🎽 🎽 🎽 Start submission of Org and Admin......');
       setState(() {
         isBusy = true;
       });
       try {
-        var uuid = Uuid();
-        var admin = User(
-            name: adminController.text,
-            email: adminEmailController.text,
-            cellphone: adminCellphoneController.text,
-            created: DateTime.now().toIso8601String(),
-            userType: ORG_ADMINISTRATOR,
-            organizationName: nameController.text,
-            organizationId: uuid.v4());
-
-        prettyPrint(
-            admin.toJson(), ' 🔆 🔆 INPUT to api call: Administrator  🔆 🔆');
-
-        //todo - change pass123 to a uuid string
-        var mUser = await AppAuth.createUser(admin, "pass123");
-        prettyPrint(mUser.toJson(),
-            '🥬 🥬 🥬 RESULT: Administrator auth record created on Firebase');
-        var org = Organization(
-            name: nameController.text,
-            countryId: "tbd",
-            email: emailController.text,
-            organizationId: admin.organizationId);
-
-        var resultOrg = await DataAPI.addOrganization(org);
-        prettyPrint(resultOrg.toJson(), '🥬 🥬 🥬 RESULT: Organization ');
-
-        var resultUser = await DataAPI.addUser(admin);
-        prettyPrint(resultUser.toJson(),
-            '🥬 🥬 🥬 RESULT: Administrator added to MongoDB');
-        await Prefs.saveUser(resultUser);
-
+        User admin = await _createAdministrator();
+        await _createOrganization(admin);
         setState(() {
           isBusy = false;
         });
@@ -243,15 +215,51 @@ class _SignupMobileState extends State<SignupMobile>
                 type: PageTransitionType.scale,
                 alignment: Alignment.topLeft,
                 duration: Duration(seconds: 1),
-                child: DashboardMain(user: resultUser)));
+                child: DashboardMain(user: admin)));
       } catch (e) {
-        pp(e);
         setState(() {
           isBusy = false;
         });
         AppSnackbar.showErrorSnackbar(
-            scaffoldKey: _key, message: "Submission failed", actionLabel: '');
+            scaffoldKey: _key,
+            message: "Submission failed: $e",
+            actionLabel: '');
       }
     }
+  }
+
+  Future<User> _createAdministrator() async {
+    var uuid = Uuid();
+    var admin = User(
+        name: adminController.text,
+        email: adminEmailController.text,
+        cellphone: adminCellphoneController.text,
+        created: DateTime.now().toIso8601String(),
+        userType: ORG_ADMINISTRATOR,
+        organizationName: nameController.text,
+        organizationId: uuid.v4(),
+        userId: uuid.v4());
+
+    //todo - change pass123 to a uuid string
+    var mUser = await AppAuth.createUser(admin, "pass123");
+    prettyPrint(mUser.toJson(),
+        '🥬 🥬 🥬 SignUpMobile:_createAdministrator  🍐  🍐  🍐 RESULT: Administrator auth record created on Firebase');
+    return admin;
+  }
+
+  Future<Organization> _createOrganization(User admin) async {
+    Country country = await Prefs.getCountry();
+    var org = Organization(
+        name: nameController.text,
+        countryId: country == null ? 'tbd' : country.countryId,
+        countryName: country == null ? 'tbd' : country.name,
+        email: emailController.text,
+        organizationId: admin.organizationId,
+        created: DateTime.now().toIso8601String());
+
+    var resultOrg = await DataAPI.addOrganization(org);
+    prettyPrint(resultOrg.toJson(),
+        '🥬 🥬 🥬 SignUpMobile:_createOrganization  🍐  🍐  🍐 RESULT: Organization ');
+    return resultOrg;
   }
 }

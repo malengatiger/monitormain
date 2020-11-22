@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:monitorlibrary/bloc/monitor_bloc.dart';
+import 'package:monitorlibrary/bloc/theme_bloc.dart';
 import 'package:monitorlibrary/data/photo.dart';
 import 'package:monitorlibrary/data/project.dart';
-import 'package:monitorlibrary/data/user.dart';
+import 'package:monitorlibrary/data/user.dart' as mon;
 import 'package:monitorlibrary/functions.dart';
 import 'package:monitorlibrary/ui/project_list/project_list_main.dart';
+import 'package:monitorlibrary/users/list/user_list_main.dart';
+import 'package:monitormain/ui/intro/intro_main.dart';
 import 'package:page_transition/page_transition.dart';
 
 class DashboardMobile extends StatefulWidget {
-  final User user;
+  final mon.User user;
   DashboardMobile({Key key, this.user}) : super(key: key);
 
   @override
@@ -19,7 +23,7 @@ class _DashboardMobileState extends State<DashboardMobile>
   AnimationController _controller;
   var isBusy = false;
   var _projects = List<Project>();
-  var _users = List<User>();
+  var _users = List<mon.User>();
   var _photos = List<Photo>();
   var _videos = List<Video>();
 
@@ -27,13 +31,34 @@ class _DashboardMobileState extends State<DashboardMobile>
   void initState() {
     _controller = AnimationController(vsync: this);
     super.initState();
-    _refresh();
+    _setItems();
+    _listenToStreams();
   }
 
-  void _refresh() async {
-    pp('_DashboardMobileState: 🎽 🎽 🎽 Refresh data ...');
-    setState(() {
-      isBusy = false;
+  void _listenToStreams() async {
+    monitorBloc.projectStream.listen((event) {
+      setState(() {
+        _projects = event;
+        pp('_DashboardMobileState: 🎽 🎽 🎽 projects delivered by stream: ${_projects.length} ...');
+      });
+    });
+    monitorBloc.usersStream.listen((event) {
+      setState(() {
+        _users = event;
+        pp('_DashboardMobileState: 🎽 🎽 🎽 users delivered by stream: ${_users.length} ...');
+      });
+    });
+    monitorBloc.photoStream.listen((event) {
+      setState(() {
+        _photos = event;
+        pp('_DashboardMobileState: 🎽 🎽 🎽 photos delivered by stream: ${_photos.length} ...');
+      });
+    });
+    monitorBloc.videoStream.listen((event) {
+      setState(() {
+        _videos = event;
+        pp('_DashboardMobileState: 🎽 🎽 🎽 videos delivered by stream: ${_videos.length} ...');
+      });
     });
   }
 
@@ -43,12 +68,61 @@ class _DashboardMobileState extends State<DashboardMobile>
     super.dispose();
   }
 
+  var items = List<BottomNavigationBarItem>();
+  void _setItems() {
+    items
+        .add(BottomNavigationBarItem(icon: Icon(Icons.people), label: 'Users'));
+    items.add(
+        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Projects'));
+    items.add(
+        BottomNavigationBarItem(icon: Icon(Icons.report), label: 'Reports'));
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text(widget.user == null ? '' : widget.user.name),
+          actions: [
+            IconButton(
+                icon: Icon(Icons.info_outline), onPressed: _navigateToIntro),
+            IconButton(
+              icon: Icon(Icons.settings),
+              onPressed: () {
+                themeBloc.changeToRandomTheme();
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.refresh),
+              onPressed: _listenToStreams,
+            )
+          ],
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(120),
+            child: Column(
+              children: [
+                Text(
+                  widget.user == null ? '' : widget.user.organizationName,
+                  style: Styles.blackBoldMedium,
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                Text(
+                  widget.user == null ? '' : widget.user.name,
+                  style: Styles.whiteSmall,
+                ),
+                SizedBox(
+                  height: 24,
+                ),
+              ],
+            ),
+          ),
+        ),
+        backgroundColor: Colors.brown[100],
+        bottomNavigationBar: BottomNavigationBar(
+          items: items,
+          onTap: _handleBottomNav,
         ),
         body: isBusy
             ? Center(
@@ -171,14 +245,36 @@ class _DashboardMobileState extends State<DashboardMobile>
     );
   }
 
+  void _handleBottomNav(int value) {
+    switch (value) {
+      case 0:
+        pp(' 🔆🔆🔆 Navigate to MonitorList');
+        _navigateToUserList();
+        break;
+      case 1:
+        pp(' 🔆🔆🔆 Navigate to ProjectList');
+        Navigator.push(
+            context,
+            PageTransition(
+                type: PageTransitionType.scale,
+                alignment: Alignment.topLeft,
+                duration: Duration(seconds: 1),
+                child: ProjectListMain(widget.user)));
+        break;
+      case 2:
+        pp(' 🔆🔆🔆 Navigate to MediaList');
+        break;
+    }
+  }
+
   void _navigateToUserList() {
-    // Navigator.push(
-    //     context,
-    //     PageTransition(
-    //         type: PageTransitionType.scale,
-    //         alignment: Alignment.topLeft,
-    //         duration: Duration(seconds: 1),
-    //         child: UserListMain()));
+    Navigator.push(
+        context,
+        PageTransition(
+            type: PageTransitionType.scale,
+            alignment: Alignment.topLeft,
+            duration: Duration(seconds: 1),
+            child: UserListMain()));
   }
 
   void _navigateToProjectList() {
@@ -188,6 +284,18 @@ class _DashboardMobileState extends State<DashboardMobile>
             type: PageTransitionType.scale,
             alignment: Alignment.topLeft,
             duration: Duration(seconds: 1),
-            child: ProjectListMain(ORG_ADMINISTRATOR)));
+            child: ProjectListMain(widget.user)));
+  }
+
+  void _navigateToIntro() {
+    Navigator.push(
+        context,
+        PageTransition(
+            type: PageTransitionType.scale,
+            alignment: Alignment.topLeft,
+            duration: Duration(seconds: 1),
+            child: IntroMain(
+              user: widget.user,
+            )));
   }
 }

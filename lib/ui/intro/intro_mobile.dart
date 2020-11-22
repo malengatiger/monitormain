@@ -19,26 +19,58 @@ class _IntroMobileState extends State<IntroMobile>
     with SingleTickerProviderStateMixin {
   AnimationController _controller;
 
-  var page1 = PageViewModel(
-    title: "Welcome to The Visual Monitor",
-    body: "This app will help you monitor progress on any type of project ...",
-    image: Image.asset(
-      "assets/intro/img1.jpeg",
-      fit: BoxFit.cover,
-    ),
-  );
-  var page2 = PageViewModel(
-    title: "Field Monitors are people too",
-    body:
-        "Here you can write the description of the page, to explain something...",
-    image: Image.asset("assets/intro/img2.jpeg", fit: BoxFit.cover),
-  );
-  var page3 = PageViewModel(
-    title: "Title of third page",
-    body:
-        "Here you can write the description of the page, to explain something...",
-    image: Image.asset("assets/intro/img3.jpg", fit: BoxFit.cover),
-  );
+  var lorem =
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac sagittis lectus. Aliquam dictum elementum massa, '
+      'eget mollis elit rhoncus ut.';
+
+  var mList = List<PageViewModel>();
+  void _buildPages(BuildContext context) {
+    var page1 = PageViewModel(
+      titleWidget: Text(
+        "Welcome to The Visual Monitor",
+        style: TextStyle(
+            fontSize: Styles.medium, color: Theme.of(context).primaryColor),
+      ),
+      bodyWidget: Text(
+        "$lorem",
+        style: Styles.blackSmall,
+      ),
+      image: Image.asset(
+        "assets/intro/img1.jpeg",
+        fit: BoxFit.cover,
+      ),
+    );
+    var page2 = PageViewModel(
+      titleWidget: Text(
+        "Field Monitors are people too",
+        style: TextStyle(
+            fontSize: Styles.medium, color: Theme.of(context).primaryColor),
+      ),
+      bodyWidget: Text(
+        "$lorem",
+        style: Styles.blackSmall,
+      ),
+      image: Image.asset("assets/intro/img2.jpeg", fit: BoxFit.cover),
+    );
+    var page3 = PageViewModel(
+      titleWidget: Text(
+        "Thank you for using VisualMonitor",
+        style: TextStyle(
+            fontSize: Styles.medium, color: Theme.of(context).primaryColor),
+      ),
+      bodyWidget: Text(
+        "$lorem",
+        style: Styles.blackSmall,
+      ),
+      image: Image.asset("assets/intro/img3.jpg", fit: BoxFit.cover),
+    );
+    mList.clear();
+    setState(() {
+      mList.add(page1);
+      mList.add(page2);
+      mList.add(page3);
+    });
+  }
 
   @override
   void initState() {
@@ -54,6 +86,9 @@ class _IntroMobileState extends State<IntroMobile>
 
   @override
   Widget build(BuildContext context) {
+    if (mList.isEmpty) {
+      _buildPages(context);
+    }
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -90,7 +125,7 @@ class _IntroMobileState extends State<IntroMobile>
                       )
                     : Text(widget.user.name),
                 SizedBox(
-                  height: 4,
+                  height: 16,
                 )
               ],
             ),
@@ -100,28 +135,33 @@ class _IntroMobileState extends State<IntroMobile>
         body: Stack(
           children: [
             IntroductionScreen(
-              pages: [page1, page2, page3],
+              pages: mList,
               onDone: () {
                 _navigateToDashboard(context);
               },
               onSkip: () {
                 _navigateToDashboard(context);
               },
-              showSkipButton: true,
+              showSkipButton: false,
               skip: const Icon(Icons.skip_next),
               next: const Icon(Icons.arrow_forward),
               done: widget.user == null
                   ? Container()
-                  : const Text("Done",
-                      style: TextStyle(fontWeight: FontWeight.w600)),
+                  : Text("Done",
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.w600,
+                      )),
               dotsDecorator: DotsDecorator(
-                  size: const Size.square(10.0),
-                  activeSize: const Size(20.0, 10.0),
-                  activeColor: Theme.of(context).accentColor,
-                  color: Colors.black26,
-                  spacing: const EdgeInsets.symmetric(horizontal: 3.0),
-                  activeShape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25.0))),
+                size: const Size.square(10.0),
+                activeSize: const Size(20.0, 10.0),
+                activeColor: Theme.of(context).primaryColor,
+                color: Colors.black26,
+                spacing: const EdgeInsets.symmetric(horizontal: 3.0),
+                activeShape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25.0),
+                ),
+              ),
             ),
           ],
         ),

@@ -75,16 +75,16 @@ class _SignupMobileState extends State<SignupMobile>
               child: Form(
                 key: _formState,
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(12.0),
                   child: Column(
                     children: [
                       TextFormField(
                         keyboardType: TextInputType.text,
                         controller: nameController,
                         decoration: InputDecoration(
-                          hintText: 'Enter Organization Name',
-                          labelText: 'Organization Name',
-                        ),
+                            hintText: 'Enter Organization Name',
+                            labelText: 'Organization Name',
+                            labelStyle: Styles.blackSmall),
                         validator: (value) {
                           if (value.isEmpty) {
                             return 'Please enter Organization Name';
@@ -92,15 +92,13 @@ class _SignupMobileState extends State<SignupMobile>
                           return null;
                         },
                       ),
-                      SizedBox(
-                        height: 2,
-                      ),
                       TextFormField(
                         keyboardType: TextInputType.emailAddress,
                         controller: emailController,
                         decoration: InputDecoration(
                             hintText: 'Enter Organization Email',
-                            labelText: 'Organization Email'),
+                            labelText: 'Organization Email',
+                            labelStyle: Styles.blackSmall),
                         validator: (value) {
                           if (value.isEmpty) {
                             return 'Please enter Organization Email';
@@ -108,15 +106,13 @@ class _SignupMobileState extends State<SignupMobile>
                           return null;
                         },
                       ),
-                      SizedBox(
-                        height: 2,
-                      ),
                       TextFormField(
                         keyboardType: TextInputType.name,
                         controller: adminController,
                         decoration: InputDecoration(
                             hintText: 'Enter Organization Administrator',
-                            labelText: 'Organization Administrator'),
+                            labelText: 'Organization Administrator',
+                            labelStyle: Styles.blackSmall),
                         validator: (value) {
                           if (value.isEmpty) {
                             return 'Please enter Administrator name';
@@ -124,15 +120,13 @@ class _SignupMobileState extends State<SignupMobile>
                           return null;
                         },
                       ),
-                      SizedBox(
-                        height: 2,
-                      ),
                       TextFormField(
                         keyboardType: TextInputType.emailAddress,
                         controller: adminEmailController,
                         decoration: InputDecoration(
                             hintText: 'Enter Administrator Email',
-                            labelText: 'Administrator Email'),
+                            labelText: 'Administrator Email',
+                            labelStyle: Styles.blackSmall),
                         validator: (value) {
                           if (value.isEmpty) {
                             return 'Please enter Administrator email';
@@ -140,15 +134,13 @@ class _SignupMobileState extends State<SignupMobile>
                           return null;
                         },
                       ),
-                      SizedBox(
-                        height: 2,
-                      ),
                       TextFormField(
                         keyboardType: TextInputType.phone,
                         controller: adminCellphoneController,
                         decoration: InputDecoration(
                             hintText: 'Enter Administrator Cellphone',
-                            labelText: 'Administrator Cellphone'),
+                            labelText: 'Administrator Cellphone',
+                            labelStyle: Styles.blackSmall),
                         validator: (value) {
                           if (value.isEmpty) {
                             return 'Please enter Administrator cellphone';

@@ -5,7 +5,7 @@ import 'package:monitorlibrary/data/user.dart';
 import 'package:monitorlibrary/functions.dart';
 import 'package:monitormain/ui/dashboard/dashboard_main.dart';
 import 'package:monitormain/ui/setup/signin_main.dart';
-import 'package:monitormain/ui/setup/signup_main.dart';
+import 'package:monitormain/ui/setup/signup_mobile.dart';
 import 'package:page_transition/page_transition.dart';
 
 class IntroMobile extends StatefulWidget {
@@ -18,6 +18,7 @@ class IntroMobile extends StatefulWidget {
 class _IntroMobileState extends State<IntroMobile>
     with SingleTickerProviderStateMixin {
   AnimationController _controller;
+  User user;
 
   var lorem =
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac sagittis lectus. Aliquam dictum elementum massa, '
@@ -76,6 +77,7 @@ class _IntroMobileState extends State<IntroMobile>
   void initState() {
     _controller = AnimationController(vsync: this);
     super.initState();
+    user = widget.user;
   }
 
   @override
@@ -99,7 +101,7 @@ class _IntroMobileState extends State<IntroMobile>
           bottom: PreferredSize(
             child: Column(
               children: [
-                widget.user == null
+                user == null
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
@@ -123,7 +125,7 @@ class _IntroMobileState extends State<IntroMobile>
                           ),
                         ],
                       )
-                    : Text(widget.user.name),
+                    : Text(user.name),
                 SizedBox(
                   height: 16,
                 )
@@ -145,7 +147,7 @@ class _IntroMobileState extends State<IntroMobile>
               showSkipButton: false,
               skip: const Icon(Icons.skip_next),
               next: const Icon(Icons.arrow_forward),
-              done: widget.user == null
+              done: user == null
                   ? Container()
                   : Text("Done",
                       style: TextStyle(
@@ -181,23 +183,33 @@ class _IntroMobileState extends State<IntroMobile>
     }
   }
 
-  void _navigateToSignUp() {
-    Navigator.push(
+  void _navigateToSignUp() async {
+    var result = await Navigator.push(
         context,
         PageTransition(
             type: PageTransitionType.scale,
             alignment: Alignment.topLeft,
             duration: Duration(seconds: 1),
-            child: SignupMain()));
+            child: SignupMobile()));
+    if (result is User) {
+      setState(() {
+        user = result;
+      });
+    }
   }
 
-  void _navigateToSignIn() {
-    Navigator.push(
+  void _navigateToSignIn() async {
+    var result = await Navigator.push(
         context,
         PageTransition(
             type: PageTransitionType.scale,
             alignment: Alignment.topLeft,
             duration: Duration(seconds: 1),
             child: SigninMain()));
+    if (result is User) {
+      setState(() {
+        user = result;
+      });
+    }
   }
 }

@@ -125,7 +125,10 @@ class _IntroMobileState extends State<IntroMobile>
                           ),
                         ],
                       )
-                    : Text(user.name),
+                    : Text(
+                        user.name,
+                        style: Styles.blackBoldSmall,
+                      ),
                 SizedBox(
                   height: 16,
                 )

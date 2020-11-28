@@ -5,6 +5,7 @@ import 'package:monitorlibrary/data/photo.dart';
 import 'package:monitorlibrary/data/project.dart';
 import 'package:monitorlibrary/data/user.dart' as mon;
 import 'package:monitorlibrary/functions.dart';
+import 'package:monitorlibrary/ui/media/media_list_main.dart';
 import 'package:monitorlibrary/ui/project_list/project_list_main.dart';
 import 'package:monitorlibrary/users/list/user_list_main.dart';
 import 'package:monitormain/ui/intro/intro_main.dart';
@@ -263,8 +264,19 @@ class _DashboardMobileState extends State<DashboardMobile>
         break;
       case 2:
         pp(' 🔆🔆🔆 Navigate to MediaList');
+        _navigateToMediaList();
         break;
     }
+  }
+
+  void _navigateToMediaList() {
+    Navigator.push(
+        context,
+        PageTransition(
+            type: PageTransitionType.scale,
+            alignment: Alignment.topLeft,
+            duration: Duration(seconds: 1),
+            child: MediaListMain(null)));
   }
 
   void _navigateToUserList() {

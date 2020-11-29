@@ -4,6 +4,7 @@ import 'package:monitorlibrary/bloc/theme_bloc.dart';
 import 'package:monitorlibrary/data/photo.dart';
 import 'package:monitorlibrary/data/project.dart';
 import 'package:monitorlibrary/data/user.dart' as mon;
+import 'package:monitorlibrary/data/user.dart';
 import 'package:monitorlibrary/functions.dart';
 import 'package:monitorlibrary/ui/media/media_list_main.dart';
 import 'package:monitorlibrary/ui/project_list/project_list_main.dart';
@@ -33,34 +34,6 @@ class _DashboardMobileState extends State<DashboardMobile>
     _controller = AnimationController(vsync: this);
     super.initState();
     _setItems();
-    _listenToStreams();
-  }
-
-  void _listenToStreams() async {
-    monitorBloc.projectStream.listen((event) {
-      setState(() {
-        _projects = event;
-        pp('_DashboardMobileState: 🎽 🎽 🎽 projects delivered by stream: ${_projects.length} ...');
-      });
-    });
-    monitorBloc.usersStream.listen((event) {
-      setState(() {
-        _users = event;
-        pp('_DashboardMobileState: 🎽 🎽 🎽 users delivered by stream: ${_users.length} ...');
-      });
-    });
-    monitorBloc.photoStream.listen((event) {
-      setState(() {
-        _photos = event;
-        pp('_DashboardMobileState: 🎽 🎽 🎽 photos delivered by stream: ${_photos.length} ...');
-      });
-    });
-    monitorBloc.videoStream.listen((event) {
-      setState(() {
-        _videos = event;
-        pp('_DashboardMobileState: 🎽 🎽 🎽 videos delivered by stream: ${_videos.length} ...');
-      });
-    });
   }
 
   @override
@@ -79,6 +52,17 @@ class _DashboardMobileState extends State<DashboardMobile>
         BottomNavigationBarItem(icon: Icon(Icons.report), label: 'Reports'));
   }
 
+  void _refresh() {
+    monitorBloc.getOrganizationVideos(
+        organizationId: widget.user.organizationId);
+    monitorBloc.getOrganizationPhotos(
+        organizationId: widget.user.organizationId);
+    monitorBloc.getOrganizationVideos(
+        organizationId: widget.user.organizationId);
+    monitorBloc.getOrganizationUsers(
+        organizationId: widget.user.organizationId);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -95,7 +79,7 @@ class _DashboardMobileState extends State<DashboardMobile>
             ),
             IconButton(
               icon: Icon(Icons.refresh),
-              onPressed: _listenToStreams,
+              onPressed: _refresh,
             )
           ],
           bottom: PreferredSize(
@@ -152,10 +136,16 @@ class _DashboardMobileState extends State<DashboardMobile>
                                   SizedBox(
                                     height: 48,
                                   ),
-                                  Text(
-                                    '${_projects.length}',
-                                    style: Styles.blackBoldLarge,
-                                  ),
+                                  StreamBuilder<List<Project>>(
+                                      stream: monitorBloc.projectStream,
+                                      builder: (context, snapshot) {
+                                        if (snapshot.hasData)
+                                          _projects = snapshot.data;
+                                        return Text(
+                                          '${_projects.length}',
+                                          style: Styles.blackBoldLarge,
+                                        );
+                                      }),
                                   SizedBox(
                                     height: 8,
                                   ),
@@ -177,10 +167,16 @@ class _DashboardMobileState extends State<DashboardMobile>
                                   SizedBox(
                                     height: 48,
                                   ),
-                                  Text(
-                                    '${_users.length}',
-                                    style: Styles.blackBoldLarge,
-                                  ),
+                                  StreamBuilder<List<User>>(
+                                      stream: monitorBloc.usersStream,
+                                      builder: (context, snapshot) {
+                                        if (snapshot.hasData)
+                                          _users = snapshot.data;
+                                        return Text(
+                                          '${_users.length}',
+                                          style: Styles.blackBoldLarge,
+                                        );
+                                      }),
                                   SizedBox(
                                     height: 8,
                                   ),
@@ -200,10 +196,16 @@ class _DashboardMobileState extends State<DashboardMobile>
                                 SizedBox(
                                   height: 48,
                                 ),
-                                Text(
-                                  '${_photos.length}',
-                                  style: Styles.blackBoldLarge,
-                                ),
+                                StreamBuilder<List<Photo>>(
+                                    stream: monitorBloc.photoStream,
+                                    builder: (context, snapshot) {
+                                      if (snapshot.hasData)
+                                        _photos = snapshot.data;
+                                      return Text(
+                                        '${_photos.length}',
+                                        style: Styles.blackBoldLarge,
+                                      );
+                                    }),
                                 SizedBox(
                                   height: 8,
                                 ),
@@ -222,10 +224,16 @@ class _DashboardMobileState extends State<DashboardMobile>
                                 SizedBox(
                                   height: 48,
                                 ),
-                                Text(
-                                  '${_videos.length}',
-                                  style: Styles.blackBoldLarge,
-                                ),
+                                StreamBuilder<List<Video>>(
+                                    stream: monitorBloc.videoStream,
+                                    builder: (context, snapshot) {
+                                      if (snapshot.hasData)
+                                        _videos = snapshot.data;
+                                      return Text(
+                                        '${_videos.length}',
+                                        style: Styles.blackBoldLarge,
+                                      );
+                                    }),
                                 SizedBox(
                                   height: 8,
                                 ),

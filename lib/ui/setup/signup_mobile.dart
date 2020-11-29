@@ -7,6 +7,7 @@ import 'package:monitorlibrary/data/organization.dart';
 import 'package:monitorlibrary/data/user.dart';
 import 'package:monitorlibrary/functions.dart';
 import 'package:monitorlibrary/snack.dart';
+import 'package:monitorlibrary/ui/credit_card/credit_card_handler.dart';
 import 'package:monitormain/ui/dashboard/dashboard_main.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:uuid/uuid.dart';
@@ -48,6 +49,14 @@ class _SignupMobileState extends State<SignupMobile>
         key: _key,
         appBar: AppBar(
           title: Text('Sign Up', style: Styles.whiteSmall),
+          actions: [
+            showCreditCard
+                ? IconButton(
+                    icon: Icon(Icons.credit_card),
+                    onPressed: _navigateToCreditCard,
+                  )
+                : Container(),
+          ],
           bottom: PreferredSize(
             preferredSize: Size.fromHeight(100),
             child: Padding(
@@ -199,15 +208,9 @@ class _SignupMobileState extends State<SignupMobile>
         await _createOrganization(admin);
         setState(() {
           isBusy = false;
+          showCreditCard = true;
         });
-        Navigator.pop(context);
-        Navigator.push(
-            context,
-            PageTransition(
-                type: PageTransitionType.scale,
-                alignment: Alignment.topLeft,
-                duration: Duration(seconds: 1),
-                child: DashboardMain(user: admin)));
+        _navigateToCreditCard();
       } catch (e) {
         setState(() {
           isBusy = false;
@@ -218,6 +221,34 @@ class _SignupMobileState extends State<SignupMobile>
             actionLabel: '');
       }
     }
+  }
+
+  bool showCreditCard = false;
+  void _navigateToDashboard(User admin) {
+    Navigator.pop(context);
+    Navigator.push(
+        context,
+        PageTransition(
+            type: PageTransitionType.scale,
+            alignment: Alignment.topLeft,
+            duration: Duration(seconds: 1),
+            child: DashboardMain(user: admin)));
+  }
+
+  void _navigateToCreditCard() async {
+    var admin = await Prefs.getUser();
+    var result = await Navigator.push(
+        context,
+        PageTransition(
+            type: PageTransitionType.scale,
+            alignment: Alignment.topLeft,
+            duration: Duration(seconds: 1),
+            child: CreditCardHandlerMain(user: admin)));
+
+    if (result != null) {
+      pp('SignUpMobile:  😡 😡 😡 Credit card processing not quite done yet!  😡 😡 😡');
+    }
+    _navigateToDashboard(admin);
   }
 
   Future<User> _createAdministrator() async {
@@ -233,7 +264,8 @@ class _SignupMobileState extends State<SignupMobile>
         userId: uuid.v4());
 
     //todo - change pass123 to a uuid string
-    var mUser = await AppAuth.createUser(admin, "pass123");
+    var mUser = await AppAuth.createUser(
+        user: admin, password: "pass123", admin: null, isLocalAdmin: true);
     prettyPrint(mUser.toJson(),
         '🥬 🥬 🥬 SignUpMobile:_createAdministrator  🍐  🍐  🍐 RESULT: Administrator auth record created on Firebase');
     return admin;

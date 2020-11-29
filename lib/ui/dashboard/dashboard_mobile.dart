@@ -6,6 +6,7 @@ import 'package:monitorlibrary/data/project.dart';
 import 'package:monitorlibrary/data/user.dart' as mon;
 import 'package:monitorlibrary/data/user.dart';
 import 'package:monitorlibrary/functions.dart';
+import 'package:monitorlibrary/ui/credit_card/credit_card_handler.dart';
 import 'package:monitorlibrary/ui/media/media_list_main.dart';
 import 'package:monitorlibrary/ui/project_list/project_list_main.dart';
 import 'package:monitorlibrary/users/list/user_list_main.dart';
@@ -70,6 +71,9 @@ class _DashboardMobileState extends State<DashboardMobile>
         appBar: AppBar(
           actions: [
             IconButton(
+                icon: Icon(Icons.credit_card),
+                onPressed: _navigateToCreditCard),
+            IconButton(
                 icon: Icon(Icons.info_outline), onPressed: _navigateToIntro),
             IconButton(
               icon: Icon(Icons.settings),
@@ -91,14 +95,21 @@ class _DashboardMobileState extends State<DashboardMobile>
                   style: Styles.blackBoldMedium,
                 ),
                 SizedBox(
-                  height: 8,
+                  height: 16,
                 ),
                 Text(
                   widget.user == null ? '' : widget.user.name,
                   style: Styles.whiteSmall,
                 ),
                 SizedBox(
-                  height: 24,
+                  height: 2,
+                ),
+                Text(
+                  'Team Administrator',
+                  style: Styles.blackTiny,
+                ),
+                SizedBox(
+                  height: 20,
                 ),
               ],
             ),
@@ -315,6 +326,18 @@ class _DashboardMobileState extends State<DashboardMobile>
             alignment: Alignment.topLeft,
             duration: Duration(seconds: 1),
             child: IntroMain(
+              user: widget.user,
+            )));
+  }
+
+  void _navigateToCreditCard() {
+    Navigator.push(
+        context,
+        PageTransition(
+            type: PageTransitionType.scale,
+            alignment: Alignment.topLeft,
+            duration: Duration(seconds: 1),
+            child: CreditCardHandlerMain(
               user: widget.user,
             )));
   }

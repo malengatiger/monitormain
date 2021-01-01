@@ -33,14 +33,7 @@ class _DashboardMainState extends State<DashboardMain>
       isBusy = true;
     });
 
-    monitorBloc.getOrganizationProjects(
-        organizationId: widget.user.organizationId);
-    monitorBloc.getOrganizationUsers(
-        organizationId: widget.user.organizationId);
-    monitorBloc.getOrganizationPhotos(
-        organizationId: widget.user.organizationId);
-    monitorBloc.getOrganizationVideos(
-        organizationId: widget.user.organizationId);
+    monitorBloc.refreshDashboardData(forceRefresh: false);
   }
 
   @override

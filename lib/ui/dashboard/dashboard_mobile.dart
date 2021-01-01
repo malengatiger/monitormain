@@ -53,15 +53,14 @@ class _DashboardMobileState extends State<DashboardMobile>
         BottomNavigationBarItem(icon: Icon(Icons.report), label: 'Reports'));
   }
 
-  void _refresh() {
-    monitorBloc.getOrganizationVideos(
-        organizationId: widget.user.organizationId);
-    monitorBloc.getOrganizationPhotos(
-        organizationId: widget.user.organizationId);
-    monitorBloc.getOrganizationVideos(
-        organizationId: widget.user.organizationId);
-    monitorBloc.getOrganizationUsers(
-        organizationId: widget.user.organizationId);
+  void _refresh() async {
+    setState(() {
+      isBusy = true;
+    });
+    await monitorBloc.refreshDashboardData(forceRefresh: true);
+    setState(() {
+      isBusy = false;
+    });
   }
 
   @override

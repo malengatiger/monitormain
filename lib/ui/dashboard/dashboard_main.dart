@@ -29,10 +29,6 @@ class _DashboardMainState extends State<DashboardMain>
 
   void _refreshData() async {
     pp('Refresh data ....');
-    setState(() {
-      isBusy = true;
-    });
-
     monitorBloc.refreshDashboardData(forceRefresh: false);
   }
 

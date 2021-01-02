@@ -265,7 +265,7 @@ class _SignupMobileState extends State<SignupMobile>
 
     //todo - change pass123 to a uuid string
     var mUser = await AppAuth.createUser(
-        user: admin, password: "pass123", admin: null, isLocalAdmin: true);
+        user: admin, password: "pass123", isLocalAdmin: true);
     prettyPrint(mUser.toJson(),
         '🥬 🥬 🥬 SignUpMobile:_createAdministrator  🍐  🍐  🍐 RESULT: Administrator auth record created on Firebase');
     return admin;

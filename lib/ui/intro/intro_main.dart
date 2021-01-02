@@ -58,12 +58,12 @@ class _IntroMainState extends State<IntroMain> {
         ? SafeArea(
             child: Scaffold(
               appBar: AppBar(
-                title: Text(('Loading User ..')),
+                title: Text('Loading User ..', style: Styles.whiteSmall),
               ),
               body: Center(
                 child: Container(
-                  width: 200,
-                  height: 200,
+                  width: 48,
+                  height: 48,
                   child: CircularProgressIndicator(
                     strokeWidth: 8,
                     backgroundColor: Colors.deepPurple,

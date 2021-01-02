@@ -122,8 +122,8 @@ class _DashboardMobileState extends State<DashboardMobile>
         body: isBusy
             ? Center(
                 child: Container(
-                  height: 100,
-                  width: 100,
+                  height: 48,
+                  width: 48,
                   child: CircularProgressIndicator(
                     strokeWidth: 8,
                     backgroundColor: Colors.teal,

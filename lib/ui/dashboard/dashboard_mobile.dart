@@ -7,11 +7,11 @@ import 'package:monitorlibrary/data/project.dart';
 import 'package:monitorlibrary/data/user.dart' as mon;
 import 'package:monitorlibrary/data/user.dart';
 import 'package:monitorlibrary/functions.dart';
-import 'package:monitorlibrary/snack.dart';
 import 'package:monitorlibrary/ui/credit_card/credit_card_handler.dart';
 import 'package:monitorlibrary/ui/media/media_list_main.dart';
 import 'package:monitorlibrary/ui/project_list/project_list_main.dart';
 import 'package:monitorlibrary/users/list/user_list_main.dart';
+import 'package:monitorlibrary/users/special_snack.dart';
 import 'package:monitormain/ui/intro/intro_main.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -25,7 +25,7 @@ class DashboardMobile extends StatefulWidget {
 
 class _DashboardMobileState extends State<DashboardMobile>
     with SingleTickerProviderStateMixin
-    implements FCMBlocListener {
+    implements SpecialSnackListener {
   AnimationController _controller;
   var isBusy = false;
   var _projects = List<Project>();
@@ -38,9 +38,7 @@ class _DashboardMobileState extends State<DashboardMobile>
     _controller = AnimationController(vsync: this);
     super.initState();
     _setItems();
-    if (fcmBloc == null) {
-      fcmBloc = FCMBloc(this);
-    }
+    _listen();
   }
 
   @override
@@ -350,45 +348,72 @@ class _DashboardMobileState extends State<DashboardMobile>
             )));
   }
 
-  @override
-  onOrgMessage(OrgMessage orgMessage) {
-    pp('$BLUE onOrgMessage ....... ');
-  }
-
-  @override
-  onPhotoMessage(Photo photo) {
-    pp('$BLUE onPhotoMessage ....... ');
-  }
-
-  @override
-  onProjectMessage(Project project) {
-    pp('$BLUE onProjectMessage ....... ');
+  void _listen() {
+    pp('DashboardMobile: 🍎 🍎 _listen to FCM message streams ... 🍎 🍎');
+    fcmBloc.projectStream.listen((Project project) {
+      if (mounted) {
+        pp('DashboardMobile: 🍎 🍎 showProjectSnackbar: ${project.name} ... 🍎 🍎');
+        _refresh(false);
+        SpecialSnack.showProjectSnackbar(
+            scaffoldKey: _key,
+            textColor: Colors.white,
+            backgroundColor: Theme.of(context).primaryColor,
+            project: project,
+            listener: this);
+      }
+    });
+    fcmBloc.userStream.listen((User user) {
+      if (mounted) {
+        pp('DashboardMobile: 🍎 🍎 showUserSnackbar: ${user.name} ... 🍎 🍎');
+        _refresh(false);
+        SpecialSnack.showUserSnackbar(
+            scaffoldKey: _key,
+            textColor: Colors.white,
+            backgroundColor: Theme.of(context).primaryColor,
+            user: user,
+            listener: this);
+      }
+    });
+    fcmBloc.photoStream.listen((Photo photo) {
+      if (mounted) {
+        pp('DashboardMobile: 🍎 🍎 showPhotoSnackbar: ${photo.userName} ... 🍎 🍎');
+        _refresh(false);
+        SpecialSnack.showPhotoSnackbar(
+            scaffoldKey: _key, photo: photo, listener: this);
+      }
+    });
+    fcmBloc.videoStream.listen((Video video) {
+      if (mounted) {
+        pp('DashboardMobile: 🍎 🍎 showVideoSnackbar: ${video.userName} ... 🍎 🍎');
+        _refresh(false);
+        SpecialSnack.showVideoSnackbar(
+            scaffoldKey: _key,
+            textColor: Colors.white,
+            backgroundColor: Theme.of(context).primaryColor,
+            video: video,
+            listener: this);
+      }
+    });
+    fcmBloc.messageStream.listen((mon.OrgMessage message) {
+      if (mounted) {
+        pp('DashboardMobile: 🍎 🍎 showMessageSnackbar: ${message.message} ... 🍎 🍎');
+        _refresh(false);
+        SpecialSnack.showMessageSnackbar(
+            scaffoldKey: _key,
+            textColor: Colors.white,
+            backgroundColor: Theme.of(context).primaryColor,
+            message: message,
+            listener: this);
+      }
+    });
   }
 
   var _key = GlobalKey<ScaffoldState>();
-  @override
-  onUserMessage(User user) {
-    pp('$BLUE onUserMessage ....... ${user.name}');
-    if (mounted) {
-      AppSnackbar.showSnackbar(
-          scaffoldKey: _key,
-          message: 'Organization User added',
-          textColor: Colors.white,
-          backgroundColor: Theme.of(context).primaryColor);
-      _refresh(false);
-    }
-  }
-
-  @override
-  onVideoMessage(Video video) {
-    pp('$BLUE onVideoMessage ....... ');
-  }
-
   static const BLUE =
       '🔵 🔵 🔵 DashboardMain:  🦠  🦠  🦠 FCM message arrived:  🦠 ';
 
   @override
-  onConditionMessage(Condition condition) {
-    pp('$BLUE onConditionMessage ....... ');
+  onClose() {
+    _key.currentState.removeCurrentSnackBar();
   }
 }

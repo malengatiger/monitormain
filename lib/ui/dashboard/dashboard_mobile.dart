@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:monitorlibrary/bloc/fcm_bloc.dart';
 import 'package:monitorlibrary/bloc/monitor_bloc.dart';
 import 'package:monitorlibrary/bloc/theme_bloc.dart';
 import 'package:monitorlibrary/data/photo.dart';
@@ -6,6 +7,7 @@ import 'package:monitorlibrary/data/project.dart';
 import 'package:monitorlibrary/data/user.dart' as mon;
 import 'package:monitorlibrary/data/user.dart';
 import 'package:monitorlibrary/functions.dart';
+import 'package:monitorlibrary/snack.dart';
 import 'package:monitorlibrary/ui/credit_card/credit_card_handler.dart';
 import 'package:monitorlibrary/ui/media/media_list_main.dart';
 import 'package:monitorlibrary/ui/project_list/project_list_main.dart';
@@ -22,7 +24,8 @@ class DashboardMobile extends StatefulWidget {
 }
 
 class _DashboardMobileState extends State<DashboardMobile>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin
+    implements FCMBlocListener {
   AnimationController _controller;
   var isBusy = false;
   var _projects = List<Project>();
@@ -35,6 +38,9 @@ class _DashboardMobileState extends State<DashboardMobile>
     _controller = AnimationController(vsync: this);
     super.initState();
     _setItems();
+    if (fcmBloc == null) {
+      fcmBloc = FCMBloc(this);
+    }
   }
 
   @override
@@ -53,11 +59,11 @@ class _DashboardMobileState extends State<DashboardMobile>
         BottomNavigationBarItem(icon: Icon(Icons.report), label: 'Reports'));
   }
 
-  void _refresh() async {
+  void _refresh(bool forceRefresh) async {
     setState(() {
       isBusy = true;
     });
-    await monitorBloc.refreshDashboardData(forceRefresh: true);
+    await monitorBloc.refreshDashboardData(forceRefresh: forceRefresh);
     setState(() {
       isBusy = false;
     });
@@ -67,6 +73,7 @@ class _DashboardMobileState extends State<DashboardMobile>
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        key: _key,
         appBar: AppBar(
           actions: [
             IconButton(
@@ -82,7 +89,9 @@ class _DashboardMobileState extends State<DashboardMobile>
             ),
             IconButton(
               icon: Icon(Icons.refresh),
-              onPressed: _refresh,
+              onPressed: () {
+                _refresh(true);
+              },
             )
           ],
           bottom: PreferredSize(
@@ -339,5 +348,47 @@ class _DashboardMobileState extends State<DashboardMobile>
             child: CreditCardHandlerMain(
               user: widget.user,
             )));
+  }
+
+  @override
+  onOrgMessage(OrgMessage orgMessage) {
+    pp('$BLUE onOrgMessage ....... ');
+  }
+
+  @override
+  onPhotoMessage(Photo photo) {
+    pp('$BLUE onPhotoMessage ....... ');
+  }
+
+  @override
+  onProjectMessage(Project project) {
+    pp('$BLUE onProjectMessage ....... ');
+  }
+
+  var _key = GlobalKey<ScaffoldState>();
+  @override
+  onUserMessage(User user) {
+    pp('$BLUE onUserMessage ....... ${user.name}');
+    if (mounted) {
+      AppSnackbar.showSnackbar(
+          scaffoldKey: _key,
+          message: 'Organization User added',
+          textColor: Colors.white,
+          backgroundColor: Theme.of(context).primaryColor);
+      _refresh(false);
+    }
+  }
+
+  @override
+  onVideoMessage(Video video) {
+    pp('$BLUE onVideoMessage ....... ');
+  }
+
+  static const BLUE =
+      '🔵 🔵 🔵 DashboardMain:  🦠  🦠  🦠 FCM message arrived:  🦠 ';
+
+  @override
+  onConditionMessage(Condition condition) {
+    pp('$BLUE onConditionMessage ....... ');
   }
 }

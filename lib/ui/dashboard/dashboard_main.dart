@@ -28,7 +28,8 @@ class _DashboardMainState extends State<DashboardMain>
   }
 
   void _refreshData() async {
-    pp('Refresh data ....');
+    pp('🔵 🔵 🔵 🔵 🔵 🔵 Refresh data and set up FCM messaging ....');
+
     monitorBloc.refreshDashboardData(forceRefresh: false);
   }
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:monitorlibrary/api/sharedprefs.dart';
 import 'package:monitorlibrary/bloc/fcm_bloc.dart';
 import 'package:monitorlibrary/bloc/monitor_bloc.dart';
 import 'package:monitorlibrary/bloc/theme_bloc.dart';
@@ -32,13 +33,19 @@ class _DashboardMobileState extends State<DashboardMobile>
   var _users = List<mon.User>();
   var _photos = List<Photo>();
   var _videos = List<Video>();
+  mon.User _user;
 
   @override
   void initState() {
     _controller = AnimationController(vsync: this);
     super.initState();
+    _getAdmin();
     _setItems();
     _listen();
+  }
+
+  void _getAdmin() async {
+    _user = await Prefs.getUser();
   }
 
   @override
@@ -350,10 +357,12 @@ class _DashboardMobileState extends State<DashboardMobile>
 
   void _listen() {
     pp('DashboardMobile: 🍎 🍎 _listen to FCM message streams ... 🍎 🍎');
-    fcmBloc.projectStream.listen((Project project) {
+    fcmBloc.projectStream.listen((Project project) async {
       if (mounted) {
         pp('DashboardMobile: 🍎 🍎 showProjectSnackbar: ${project.name} ... 🍎 🍎');
-        _refresh(false);
+        _projects = await monitorBloc.getOrganizationProjects(
+            organizationId: _user.organizationId, forceRefresh: false);
+        setState(() {});
         SpecialSnack.showProjectSnackbar(
             scaffoldKey: _key,
             textColor: Colors.white,
@@ -362,10 +371,12 @@ class _DashboardMobileState extends State<DashboardMobile>
             listener: this);
       }
     });
-    fcmBloc.userStream.listen((User user) {
+    fcmBloc.userStream.listen((User user) async {
       if (mounted) {
         pp('DashboardMobile: 🍎 🍎 showUserSnackbar: ${user.name} ... 🍎 🍎');
-        _refresh(false);
+        _users = await monitorBloc.getOrganizationUsers(
+            organizationId: _user.organizationId, forceRefresh: false);
+        setState(() {});
         SpecialSnack.showUserSnackbar(
             scaffoldKey: _key,
             textColor: Colors.white,
@@ -374,30 +385,29 @@ class _DashboardMobileState extends State<DashboardMobile>
             listener: this);
       }
     });
-    fcmBloc.photoStream.listen((Photo photo) {
+    fcmBloc.photoStream.listen((Photo photo) async {
       if (mounted) {
         pp('DashboardMobile: 🍎 🍎 showPhotoSnackbar: ${photo.userName} ... 🍎 🍎');
-        _refresh(false);
+        _photos = await monitorBloc.getOrganizationPhotos(
+            organizationId: _user.organizationId, forceRefresh: false);
+        setState(() {});
         SpecialSnack.showPhotoSnackbar(
             scaffoldKey: _key, photo: photo, listener: this);
       }
     });
-    fcmBloc.videoStream.listen((Video video) {
+    fcmBloc.videoStream.listen((Video video) async {
       if (mounted) {
         pp('DashboardMobile: 🍎 🍎 showVideoSnackbar: ${video.userName} ... 🍎 🍎');
-        _refresh(false);
+        _videos = await monitorBloc.getOrganizationVideos(
+            organizationId: _user.organizationId, forceRefresh: false);
         SpecialSnack.showVideoSnackbar(
-            scaffoldKey: _key,
-            textColor: Colors.white,
-            backgroundColor: Theme.of(context).primaryColor,
-            video: video,
-            listener: this);
+            scaffoldKey: _key, video: video, listener: this);
       }
     });
     fcmBloc.messageStream.listen((mon.OrgMessage message) {
       if (mounted) {
         pp('DashboardMobile: 🍎 🍎 showMessageSnackbar: ${message.message} ... 🍎 🍎');
-        _refresh(false);
+
         SpecialSnack.showMessageSnackbar(
             scaffoldKey: _key,
             textColor: Colors.white,

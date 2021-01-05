@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:monitorlibrary/bloc/monitor_bloc.dart';
 import 'package:monitorlibrary/data/user.dart';
 import 'package:monitorlibrary/functions.dart';
-import 'package:monitormain/ui/dashboard/dashboard_desktop.dart';
 import 'package:monitormain/ui/dashboard/dashboard_mobile.dart';
 import 'package:monitormain/ui/dashboard/dashboard_tablet.dart';
 import 'package:responsive_builder/responsive_builder.dart';
@@ -48,7 +47,7 @@ class _DashboardMainState extends State<DashboardMain>
       tablet: DashboardTablet(
         user: widget.user,
       ),
-      desktop: DashboardDesktop(
+      desktop: DashboardTablet(
         user: widget.user,
       ),
     );

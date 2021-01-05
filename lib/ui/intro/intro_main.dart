@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:monitorlibrary/auth/app_auth.dart';
+import 'package:monitorlibrary/api/sharedprefs.dart';
 import 'package:monitorlibrary/data/user.dart';
 import 'package:monitorlibrary/functions.dart';
 import 'package:monitormain/ui/dashboard/dashboard_main.dart';
-import 'package:monitormain/ui/intro/intro_desktop.dart';
 import 'package:monitormain/ui/intro/intro_mobile.dart';
 import 'package:monitormain/ui/intro/intro_tablet.dart';
 import 'package:page_transition/page_transition.dart';
@@ -36,8 +35,9 @@ class _IntroMainState extends State<IntroMain> {
     setState(() {
       isBusy = true;
     });
-    user = await AppAuth.isUserSignedIn();
-    if (user != null && user is User) {
+    user = await Prefs.getUser();
+    if (user != null) {
+      pp('IntroMain: 🎽 🎽 🎽 Checking the user:  🎽 User is ${user.name}  🎽');
       Navigator.pop(context);
       Navigator.push(
           context,
@@ -46,6 +46,8 @@ class _IntroMainState extends State<IntroMain> {
               alignment: Alignment.topLeft,
               duration: Duration(seconds: 1),
               child: DashboardMain(user: user)));
+    } else {
+      pp('IntroMain: 🎽 🎽 🎽 Checking the user:  🎽 User is NULL');
     }
     setState(() {
       isBusy = false;
@@ -75,7 +77,7 @@ class _IntroMainState extends State<IntroMain> {
         : ScreenTypeLayout(
             mobile: IntroMobile(user: user),
             tablet: IntroTablet(user: user),
-            desktop: IntroDesktop(user: user),
+            desktop: IntroTablet(user: user),
           );
   }
 }

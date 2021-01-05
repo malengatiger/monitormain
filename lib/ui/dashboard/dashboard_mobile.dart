@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:monitorlibrary/api/sharedprefs.dart';
-import 'package:monitorlibrary/bloc/fcm_bloc.dart';
 import 'package:monitorlibrary/bloc/monitor_bloc.dart';
 import 'package:monitorlibrary/bloc/theme_bloc.dart';
 import 'package:monitorlibrary/data/photo.dart';
@@ -13,8 +12,10 @@ import 'package:monitorlibrary/ui/media/media_list_main.dart';
 import 'package:monitorlibrary/ui/project_list/project_list_main.dart';
 import 'package:monitorlibrary/users/list/user_list_main.dart';
 import 'package:monitorlibrary/users/special_snack.dart';
+import 'package:monitormain/bloc/fcm_new_bloc.dart';
 import 'package:monitormain/ui/intro/intro_main.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:universal_platform/universal_platform.dart';
 
 class DashboardMobile extends StatefulWidget {
   final mon.User user;
@@ -355,67 +356,77 @@ class _DashboardMobileState extends State<DashboardMobile>
             )));
   }
 
-  void _listen() {
-    pp('DashboardMobile: 🍎 🍎 _listen to FCM message streams ... 🍎 🍎');
-    fcmBloc.projectStream.listen((Project project) async {
-      if (mounted) {
-        pp('DashboardMobile: 🍎 🍎 showProjectSnackbar: ${project.name} ... 🍎 🍎');
-        _projects = await monitorBloc.getOrganizationProjects(
-            organizationId: _user.organizationId, forceRefresh: false);
-        setState(() {});
-        SpecialSnack.showProjectSnackbar(
-            scaffoldKey: _key,
-            textColor: Colors.white,
-            backgroundColor: Theme.of(context).primaryColor,
-            project: project,
-            listener: this);
-      }
-    });
-    fcmBloc.userStream.listen((User user) async {
-      if (mounted) {
-        pp('DashboardMobile: 🍎 🍎 showUserSnackbar: ${user.name} ... 🍎 🍎');
-        _users = await monitorBloc.getOrganizationUsers(
-            organizationId: _user.organizationId, forceRefresh: false);
-        setState(() {});
-        SpecialSnack.showUserSnackbar(
-            scaffoldKey: _key,
-            textColor: Colors.white,
-            backgroundColor: Theme.of(context).primaryColor,
-            user: user,
-            listener: this);
-      }
-    });
-    fcmBloc.photoStream.listen((Photo photo) async {
-      if (mounted) {
-        pp('DashboardMobile: 🍎 🍎 showPhotoSnackbar: ${photo.userName} ... 🍎 🍎');
-        _photos = await monitorBloc.getOrganizationPhotos(
-            organizationId: _user.organizationId, forceRefresh: false);
-        setState(() {});
-        SpecialSnack.showPhotoSnackbar(
-            scaffoldKey: _key, photo: photo, listener: this);
-      }
-    });
-    fcmBloc.videoStream.listen((Video video) async {
-      if (mounted) {
-        pp('DashboardMobile: 🍎 🍎 showVideoSnackbar: ${video.userName} ... 🍎 🍎');
-        _videos = await monitorBloc.getOrganizationVideos(
-            organizationId: _user.organizationId, forceRefresh: false);
-        SpecialSnack.showVideoSnackbar(
-            scaffoldKey: _key, video: video, listener: this);
-      }
-    });
-    fcmBloc.messageStream.listen((mon.OrgMessage message) {
-      if (mounted) {
-        pp('DashboardMobile: 🍎 🍎 showMessageSnackbar: ${message.message} ... 🍎 🍎');
+  NewFCMBloc newFCMBloc = NewFCMBloc();
+  void _listen() async {
+    var android = UniversalPlatform.isAndroid;
+    var ios = UniversalPlatform.isIOS;
 
-        SpecialSnack.showMessageSnackbar(
-            scaffoldKey: _key,
-            textColor: Colors.white,
-            backgroundColor: Theme.of(context).primaryColor,
-            message: message,
-            listener: this);
-      }
-    });
+    await newFCMBloc.initialize();
+    //
+    // if (android || ios) {
+    //   pp('DashboardMobile: 🍎 🍎 _listen to FCM message streams ... 🍎 🍎');
+    //   fcmBloc.projectStream.listen((Project project) async {
+    //     if (mounted) {
+    //       pp('DashboardMobile: 🍎 🍎 showProjectSnackbar: ${project.name} ... 🍎 🍎');
+    //       _projects = await monitorBloc.getOrganizationProjects(
+    //           organizationId: _user.organizationId, forceRefresh: false);
+    //       setState(() {});
+    //       SpecialSnack.showProjectSnackbar(
+    //           scaffoldKey: _key,
+    //           textColor: Colors.white,
+    //           backgroundColor: Theme.of(context).primaryColor,
+    //           project: project,
+    //           listener: this);
+    //     }
+    //   });
+    //   fcmBloc.userStream.listen((User user) async {
+    //     if (mounted) {
+    //       pp('DashboardMobile: 🍎 🍎 showUserSnackbar: ${user.name} ... 🍎 🍎');
+    //       _users = await monitorBloc.getOrganizationUsers(
+    //           organizationId: _user.organizationId, forceRefresh: false);
+    //       setState(() {});
+    //       SpecialSnack.showUserSnackbar(
+    //           scaffoldKey: _key,
+    //           textColor: Colors.white,
+    //           backgroundColor: Theme.of(context).primaryColor,
+    //           user: user,
+    //           listener: this);
+    //     }
+    //   });
+    //   fcmBloc.photoStream.listen((Photo photo) async {
+    //     if (mounted) {
+    //       pp('DashboardMobile: 🍎 🍎 showPhotoSnackbar: ${photo.userName} ... 🍎 🍎');
+    //       _photos = await monitorBloc.getOrganizationPhotos(
+    //           organizationId: _user.organizationId, forceRefresh: false);
+    //       setState(() {});
+    //       SpecialSnack.showPhotoSnackbar(
+    //           scaffoldKey: _key, photo: photo, listener: this);
+    //     }
+    //   });
+    //   fcmBloc.videoStream.listen((Video video) async {
+    //     if (mounted) {
+    //       pp('DashboardMobile: 🍎 🍎 showVideoSnackbar: ${video.userName} ... 🍎 🍎');
+    //       _videos = await monitorBloc.getOrganizationVideos(
+    //           organizationId: _user.organizationId, forceRefresh: false);
+    //       SpecialSnack.showVideoSnackbar(
+    //           scaffoldKey: _key, video: video, listener: this);
+    //     }
+    //   });
+    //   fcmBloc.messageStream.listen((mon.OrgMessage message) {
+    //     if (mounted) {
+    //       pp('DashboardMobile: 🍎 🍎 showMessageSnackbar: ${message.message} ... 🍎 🍎');
+    //
+    //       SpecialSnack.showMessageSnackbar(
+    //           scaffoldKey: _key,
+    //           textColor: Colors.white,
+    //           backgroundColor: Theme.of(context).primaryColor,
+    //           message: message,
+    //           listener: this);
+    //     }
+    //   });
+    // } else {
+    //   pp('App is running on the Web 👿 👿 👿  firebase messaging is OFF 👿 👿 👿');
+    // }
   }
 
   var _key = GlobalKey<ScaffoldState>();

@@ -61,8 +61,8 @@ class _DashboardMobileState extends State<DashboardMobile>
         .add(BottomNavigationBarItem(icon: Icon(Icons.people), label: 'Users'));
     items.add(
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Projects'));
-    items.add(
-        BottomNavigationBarItem(icon: Icon(Icons.report), label: 'Reports'));
+    // items.add(
+    //     BottomNavigationBarItem(icon: Icon(Icons.send), label: 'Reports'));
   }
 
   void _refresh(bool forceRefresh) async {
@@ -83,18 +83,31 @@ class _DashboardMobileState extends State<DashboardMobile>
         appBar: AppBar(
           actions: [
             IconButton(
-                icon: Icon(Icons.credit_card),
+                icon: Icon(
+                  Icons.credit_card,
+                  size: 20,
+                ),
                 onPressed: _navigateToCreditCard),
             IconButton(
-                icon: Icon(Icons.info_outline), onPressed: _navigateToIntro),
+                icon: Icon(
+                  Icons.info_outline,
+                  size: 20,
+                ),
+                onPressed: _navigateToIntro),
             IconButton(
-              icon: Icon(Icons.settings),
+              icon: Icon(
+                Icons.settings,
+                size: 20,
+              ),
               onPressed: () {
                 themeBloc.changeToRandomTheme();
               },
             ),
             IconButton(
-              icon: Icon(Icons.refresh),
+              icon: Icon(
+                Icons.refresh,
+                size: 20,
+              ),
               onPressed: () {
                 _refresh(true);
               },
@@ -287,13 +300,7 @@ class _DashboardMobileState extends State<DashboardMobile>
         break;
       case 1:
         pp(' 🔆🔆🔆 Navigate to ProjectList');
-        Navigator.push(
-            context,
-            PageTransition(
-                type: PageTransitionType.scale,
-                alignment: Alignment.topLeft,
-                duration: Duration(seconds: 1),
-                child: ProjectListMain(widget.user)));
+        _navigateToProjectList();
         break;
       case 2:
         pp(' 🔆🔆🔆 Navigate to MediaList');
@@ -383,11 +390,7 @@ class _DashboardMobileState extends State<DashboardMobile>
               organizationId: _user.organizationId, forceRefresh: false);
           setState(() {});
           SpecialSnack.showUserSnackbar(
-              scaffoldKey: _key,
-              textColor: Colors.white,
-              backgroundColor: Theme.of(context).primaryColor,
-              user: user,
-              listener: this);
+              scaffoldKey: _key, user: user, listener: this);
         }
       });
       fcmBloc.photoStream.listen((Photo photo) async {
@@ -414,11 +417,7 @@ class _DashboardMobileState extends State<DashboardMobile>
           pp('DashboardMobile: 🍎 🍎 showMessageSnackbar: ${message.message} ... 🍎 🍎');
 
           SpecialSnack.showMessageSnackbar(
-              scaffoldKey: _key,
-              textColor: Colors.white,
-              backgroundColor: Theme.of(context).primaryColor,
-              message: message,
-              listener: this);
+              scaffoldKey: _key, message: message, listener: this);
         }
       });
     } else {
@@ -432,6 +431,6 @@ class _DashboardMobileState extends State<DashboardMobile>
 
   @override
   onClose() {
-    _key.currentState.removeCurrentSnackBar();
+    ScaffoldMessenger.of(_key.currentState.context).removeCurrentSnackBar();
   }
 }

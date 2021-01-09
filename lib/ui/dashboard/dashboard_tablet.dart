@@ -382,11 +382,7 @@ class _DashboardTabletState extends State<DashboardTablet>
               organizationId: _user.organizationId, forceRefresh: false);
           setState(() {});
           SpecialSnack.showUserSnackbar(
-              scaffoldKey: _key,
-              textColor: Colors.white,
-              backgroundColor: Theme.of(context).primaryColor,
-              user: user,
-              listener: this);
+              scaffoldKey: _key, user: user, listener: this);
         }
       });
       fcmBloc.photoStream.listen((Photo photo) async {
@@ -413,11 +409,7 @@ class _DashboardTabletState extends State<DashboardTablet>
           pp('DashboardTablet: 🍎 🍎 showMessageSnackbar: ${message.message} ... 🍎 🍎');
 
           SpecialSnack.showMessageSnackbar(
-              scaffoldKey: _key,
-              textColor: Colors.white,
-              backgroundColor: Theme.of(context).primaryColor,
-              message: message,
-              listener: this);
+              scaffoldKey: _key, message: message, listener: this);
         }
       });
     } else {

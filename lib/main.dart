@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
 import 'package:monitorlibrary/bloc/theme_bloc.dart';
 import 'package:monitorlibrary/functions.dart';
 import 'package:monitormain/ui/intro/intro_main.dart';
@@ -12,7 +13,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   pp('$z app main: $m Firebase initialized !! $z');
-
+  await DotEnv.load(fileName: ".env");
   runApp(MyApp());
 
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: 'Organization Boss',
             theme: ThemeUtil.getTheme(themeIndex: index),
+            // home: StaggeredTest(),
             home: IntroMain(),
           );
         });

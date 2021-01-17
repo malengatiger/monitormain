@@ -16,13 +16,14 @@
             <option value="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/firebase_core-0.5.3/android" />
             <option value="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/firebase_messaging-7.0.3/android" />
             <option value="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/firebase_storage-5.2.0/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/flutter_local_notifications-3.0.3/android" />
             <option value="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/flutter_plugin_android_lifecycle-1.0.11/android" />
             <option value="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/geocoding-1.0.5/android" />
             <option value="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/geolocator-6.1.13/android" />
-            <option value="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/google_maps_flutter-1.0.6/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/google_maps_flutter-1.1.1/android" />
             <option value="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/intent-1.4.0/android" />
             <option value="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/mobmongo-0.0.8+1/android" />
-            <option value="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.24/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.27/android" />
             <option value="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/permission_handler-5.0.1+1/android" />
             <option value="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/sensors-0.4.2+6/android" />
             <option value="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/shared_preferences-0.5.12+4/android" />

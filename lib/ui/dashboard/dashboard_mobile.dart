@@ -9,7 +9,7 @@ import 'package:monitorlibrary/data/user.dart' as mon;
 import 'package:monitorlibrary/data/user.dart';
 import 'package:monitorlibrary/functions.dart';
 import 'package:monitorlibrary/ui/credit_card/credit_card_handler.dart';
-import 'package:monitorlibrary/ui/media/media_list_main.dart';
+import 'package:monitorlibrary/ui/media/list/media_list_main.dart';
 import 'package:monitorlibrary/ui/project_list/project_list_main.dart';
 import 'package:monitorlibrary/users/list/user_list_main.dart';
 import 'package:monitorlibrary/users/special_snack.dart';
@@ -30,10 +30,10 @@ class _DashboardMobileState extends State<DashboardMobile>
     implements SpecialSnackListener {
   AnimationController _controller;
   var isBusy = false;
-  var _projects = List<Project>();
-  var _users = List<mon.User>();
-  var _photos = List<Photo>();
-  var _videos = List<Video>();
+  var _projects = <Project>[];
+  var _users = <mon.User>[];
+  var _photos = <Photo>[];
+  var _videos = <Video>[];
   mon.User _user;
 
   @override

@@ -138,8 +138,7 @@ class _SigninTabletState extends State<SigninTablet>
   }
 
   void _checkStatus() async {
-    await DotEnv().load('.env');
-    var status = DotEnv().env['status'];
+    var status = env['status'];
     pp('🥦🥦 Checking app status ..... 🥦🥦 $status 🌸 🌸 🌸');
     if (status == 'dev') {
       emailCntr.text = 'fanyana@orga.com';

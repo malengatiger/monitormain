@@ -9,7 +9,7 @@ import 'package:monitorlibrary/data/user.dart' as mon;
 import 'package:monitorlibrary/data/user.dart';
 import 'package:monitorlibrary/functions.dart';
 import 'package:monitorlibrary/ui/credit_card/credit_card_handler.dart';
-import 'package:monitorlibrary/ui/media/media_list_main.dart';
+import 'package:monitorlibrary/ui/media/list/media_list_main.dart';
 import 'package:monitorlibrary/ui/project_list/project_list_main.dart';
 import 'package:monitorlibrary/users/list/user_list_main.dart';
 import 'package:monitorlibrary/users/special_snack.dart';

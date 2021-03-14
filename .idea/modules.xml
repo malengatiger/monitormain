@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../new-monitor-repo/monitorlibrary/monitorlibrary.iml" filepath="$PROJECT_DIR$/../new-monitor-repo/monitorlibrary/monitorlibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/monitormain.iml" filepath="$PROJECT_DIR$/monitormain.iml" />
     </modules>
   </component>

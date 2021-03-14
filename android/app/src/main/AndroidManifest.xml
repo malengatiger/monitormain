@@ -8,6 +8,7 @@
        android:name=".Application"
        android:label="aamain"
         android:icon="@mipmap/ic_launcher"
+       android:usesCleartextTraffic="true"
        android:allowBackup="true">
        <meta-data android:name="com.google.android.geo.API_KEY"
            android:value="AIzaSyCnc7Ay-B1iyAIokMVXS_P-4fnYCx8HhRc"/>

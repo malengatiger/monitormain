@@ -24,7 +24,7 @@ class _IntroMobileState extends State<IntroMobile>
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac sagittis lectus. Aliquam dictum elementum massa, '
       'eget mollis elit rhoncus ut.';
 
-  var mList = [];
+  var mList = <PageViewModel>[];
   void _buildPages(BuildContext context) {
     var page1 = PageViewModel(
       titleWidget: Text(

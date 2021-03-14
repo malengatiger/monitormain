@@ -18,7 +18,7 @@ class IntroMain extends StatefulWidget {
 
 /// Main Widget that manages a responsive layout for intro pages
 class _IntroMainState extends State<IntroMain> {
-  var isBusy = false;
+  var isBusy = true;
   User user;
   @override
   void initState() {
@@ -31,7 +31,7 @@ class _IntroMainState extends State<IntroMain> {
   }
 
   void _checkUser() async {
-    pp('IntroMain: 🎽 🎽 🎽 Checking the user ....');
+    pp('IntroMain: 🎽 🎽 🎽 ....... Checking the user ....');
     setState(() {
       isBusy = true;
     });
@@ -68,7 +68,7 @@ class _IntroMainState extends State<IntroMain> {
                   height: 48,
                   child: CircularProgressIndicator(
                     strokeWidth: 8,
-                    backgroundColor: Colors.deepPurple,
+                    backgroundColor: Colors.white,
                   ),
                 ),
               ),

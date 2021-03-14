@@ -7,7 +7,7 @@ main() {
     TestWidgetsFlutterBinding.ensureInitialized();
     var res;
     try {
-      res = await LocalDBAPI.connectToLocalDB();
+      res = await LocalDBAPI.connectLocalDB();
     } catch (e) {
       pp('👿👿 This shit cannot be tested 👿👿: $e');
     }

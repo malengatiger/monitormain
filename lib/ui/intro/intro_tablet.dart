@@ -5,7 +5,7 @@ import 'package:monitorlibrary/data/user.dart';
 import 'package:monitorlibrary/functions.dart';
 import 'package:monitormain/ui/dashboard/dashboard_main.dart';
 import 'package:monitormain/ui/setup/signin_main.dart';
-import 'package:monitormain/ui/setup/signup_mobile.dart';
+import 'package:monitormain/ui/setup/signup_main.dart';
 import 'package:page_transition/page_transition.dart';
 
 class IntroTablet extends StatefulWidget {
@@ -213,7 +213,7 @@ class _IntroTabletState extends State<IntroTablet>
             type: PageTransitionType.scale,
             alignment: Alignment.topLeft,
             duration: Duration(seconds: 1),
-            child: SignupMobile()));
+            child: SignupMain()));
     if (result is User) {
       setState(() {
         user = result;

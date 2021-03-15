@@ -69,7 +69,7 @@ class _DashboardMobileState extends State<DashboardMobile>
     setState(() {
       isBusy = true;
     });
-    await monitorBloc.refreshDashboardData(forceRefresh: forceRefresh);
+    await monitorBloc.refreshOrgDashboardData(forceRefresh: forceRefresh);
     setState(() {
       isBusy = false;
     });

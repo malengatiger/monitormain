@@ -42,170 +42,11 @@ class _SignUpTabletState extends State<SignUpTablet>
   var adminCellphoneController = TextEditingController();
   var adminPasswordController = TextEditingController();
 
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        key: _key,
-        appBar: AppBar(
-          title: Text('Digital Monitor Sign Up', style: Styles.whiteSmall),
-          actions: [
-            showCreditCard
-                ? IconButton(
-                    icon: Icon(Icons.credit_card),
-                    onPressed: _navigateToCreditCard,
-                  )
-                : Container(),
-          ],
-          bottom: PreferredSize(
-            preferredSize: Size.fromHeight(100),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  Text(
-                    'Please provide the data below and create both an Organization and the first Administrator',
-                    style: Styles.whiteSmall,
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-        backgroundColor: Colors.brown[100],
-        body: Padding(
-          padding: const EdgeInsets.all(28.0),
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(32.0),
-              child: Card(
-                elevation: 4,
-                child: Form(
-                  key: _formState,
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Column(
-                      children: [
-                        TextFormField(
-                          keyboardType: TextInputType.text,
-                          controller: nameController,
-                          decoration: InputDecoration(
-                              hintText: 'Enter Organization Name',
-                              labelText: 'Organization Name',
-                              labelStyle: Styles.blackSmall),
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Please enter Organization Name';
-                            }
-                            return null;
-                          },
-                        ),
-                        TextFormField(
-                          keyboardType: TextInputType.emailAddress,
-                          controller: emailController,
-                          decoration: InputDecoration(
-                              hintText: 'Enter Organization Email',
-                              labelText: 'Organization Email',
-                              labelStyle: Styles.blackSmall),
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Please enter Organization Email';
-                            }
-                            return null;
-                          },
-                        ),
-                        TextFormField(
-                          keyboardType: TextInputType.name,
-                          controller: adminController,
-                          decoration: InputDecoration(
-                              hintText: 'Enter Organization Administrator',
-                              labelText: 'Organization Administrator',
-                              labelStyle: Styles.blackSmall),
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Please enter Administrator name';
-                            }
-                            return null;
-                          },
-                        ),
-                        TextFormField(
-                          keyboardType: TextInputType.emailAddress,
-                          controller: adminEmailController,
-                          decoration: InputDecoration(
-                              hintText: 'Enter Administrator Email',
-                              labelText: 'Administrator Email',
-                              labelStyle: Styles.blackSmall),
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Please enter Administrator email';
-                            }
-                            return null;
-                          },
-                        ),
-                        TextFormField(
-                          keyboardType: TextInputType.phone,
-                          controller: adminCellphoneController,
-                          decoration: InputDecoration(
-                              hintText: 'Enter Administrator Cellphone',
-                              labelText: 'Administrator Cellphone',
-                              labelStyle: Styles.blackSmall),
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Please enter Administrator cellphone';
-                            }
-                            return null;
-                          },
-                        ),
-                        SizedBox(
-                          height: 28,
-                        ),
-                        isBusy
-                            ? Container(
-                                height: 24,
-                                width: 24,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 8,
-                                  backgroundColor: Colors.black,
-                                ),
-                              )
-                            : RaisedButton(
-                                elevation: 4,
-                                color: Theme.of(context).primaryColor,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 28.0,
-                                      right: 28,
-                                      top: 12,
-                                      bottom: 12),
-                                  child: Text(
-                                    'Submit',
-                                    style: Styles.whiteSmall,
-                                  ),
-                                ),
-                                onPressed: _submit),
-                        SizedBox(
-                          height: 28,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   var isBusy = false;
   var _key = GlobalKey<ScaffoldState>();
   void _submit() async {
     if (_formState.currentState.validate()) {
-      pp('🎽 🎽 🎽 Start submission of Org and Admin......');
+      pp('🎽 🎽 🎽 Start submission of new Org and Admin......');
       setState(() {
         isBusy = true;
       });
@@ -252,7 +93,7 @@ class _SignUpTabletState extends State<SignUpTablet>
             child: CreditCardHandlerMain(user: admin)));
 
     if (result != null) {
-      pp('SignUpMobile:  😡 😡 😡 Credit card processing not quite done yet!  😡 😡 😡');
+      pp('SignUpTablet:  😡 😡 😡 Credit card processing not quite done yet!  😡 😡 😡');
     }
     _navigateToDashboard(admin);
   }
@@ -291,5 +132,167 @@ class _SignUpTabletState extends State<SignUpTablet>
     prettyPrint(resultOrg.toJson(),
         '🥬 🥬 🥬 SignUpMobile:_createOrganization  🍐  🍐  🍐 RESULT: Organization ');
     return resultOrg;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+        key: _key,
+        appBar: AppBar(
+          title: Text('Digital Monitor Sign Up', style: Styles.whiteSmall),
+          actions: [
+            showCreditCard
+                ? IconButton(
+                    icon: Icon(Icons.credit_card),
+                    onPressed: _navigateToCreditCard,
+                  )
+                : Container(),
+          ],
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(100),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  Text(
+                    'Please provide the data below and create both an Organization and the first Administrator',
+                    style: Styles.whiteSmall,
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        backgroundColor: Colors.brown[600],
+        body: Container(
+          width: 200,
+          child: Padding(
+            padding: const EdgeInsets.all(28.0),
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(32.0),
+                child: Card(
+                  elevation: 4,
+                  child: Form(
+                    key: _formState,
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            keyboardType: TextInputType.text,
+                            controller: nameController,
+                            decoration: InputDecoration(
+                                hintText: 'Enter Organization Name',
+                                labelText: 'Organization Name',
+                                labelStyle: Styles.blackSmall),
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'Please enter Organization Name';
+                              }
+                              return null;
+                            },
+                          ),
+                          TextFormField(
+                            keyboardType: TextInputType.emailAddress,
+                            controller: emailController,
+                            decoration: InputDecoration(
+                                hintText: 'Enter Organization Email',
+                                labelText: 'Organization Email',
+                                labelStyle: Styles.blackSmall),
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'Please enter Organization Email';
+                              }
+                              return null;
+                            },
+                          ),
+                          TextFormField(
+                            keyboardType: TextInputType.name,
+                            controller: adminController,
+                            decoration: InputDecoration(
+                                hintText: 'Enter Organization Administrator',
+                                labelText: 'Organization Administrator',
+                                labelStyle: Styles.blackSmall),
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'Please enter Administrator name';
+                              }
+                              return null;
+                            },
+                          ),
+                          TextFormField(
+                            keyboardType: TextInputType.emailAddress,
+                            controller: adminEmailController,
+                            decoration: InputDecoration(
+                                hintText: 'Enter Administrator Email',
+                                labelText: 'Administrator Email',
+                                labelStyle: Styles.blackSmall),
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'Please enter Administrator email';
+                              }
+                              return null;
+                            },
+                          ),
+                          TextFormField(
+                            keyboardType: TextInputType.phone,
+                            controller: adminCellphoneController,
+                            decoration: InputDecoration(
+                                hintText: 'Enter Administrator Cellphone',
+                                labelText: 'Administrator Cellphone',
+                                labelStyle: Styles.blackSmall),
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'Please enter Administrator cellphone';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(
+                            height: 28,
+                          ),
+                          isBusy
+                              ? Container(
+                                  height: 24,
+                                  width: 24,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 8,
+                                    backgroundColor: Colors.black,
+                                  ),
+                                )
+                              : RaisedButton(
+                                  elevation: 4,
+                                  color: Theme.of(context).primaryColor,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 28.0,
+                                        right: 28,
+                                        top: 12,
+                                        bottom: 12),
+                                    child: Text(
+                                      'Submit',
+                                      style: Styles.whiteSmall,
+                                    ),
+                                  ),
+                                  onPressed: _submit),
+                          SizedBox(
+                            height: 28,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

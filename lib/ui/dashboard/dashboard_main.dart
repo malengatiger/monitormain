@@ -7,16 +7,16 @@ import 'package:monitormain/ui/dashboard/dashboard_tablet.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class DashboardMain extends StatefulWidget {
-  final User user;
+  final User? user;
 
-  const DashboardMain({Key key, this.user}) : super(key: key);
+  const DashboardMain({Key? key, this.user}) : super(key: key);
   @override
   _DashboardMainState createState() => _DashboardMainState();
 }
 
 class _DashboardMainState extends State<DashboardMain>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
+  late AnimationController _controller;
   var isBusy = false;
 
   @override
@@ -42,13 +42,13 @@ class _DashboardMainState extends State<DashboardMain>
   Widget build(BuildContext context) {
     return ScreenTypeLayout(
       mobile: DashboardMobile(
-        user: widget.user,
+        user: widget.user!,
       ),
       tablet: DashboardTablet(
-        user: widget.user,
+        user: widget.user!,
       ),
       desktop: DashboardTablet(
-        user: widget.user,
+        user: widget.user!,
       ),
     );
   }

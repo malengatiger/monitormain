@@ -9,8 +9,8 @@ import 'package:page_transition/page_transition.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class IntroMain extends StatefulWidget {
-  final User user;
-  IntroMain({Key key, this.user}) : super(key: key);
+  final User? user;
+  IntroMain({Key? key,  this.user}) : super(key: key);
 
   @override
   _IntroMainState createState() => _IntroMainState();
@@ -19,7 +19,7 @@ class IntroMain extends StatefulWidget {
 /// Main Widget that manages a responsive layout for intro pages
 class _IntroMainState extends State<IntroMain> {
   var isBusy = true;
-  User user;
+  User? user;
   @override
   void initState() {
     super.initState();
@@ -37,7 +37,7 @@ class _IntroMainState extends State<IntroMain> {
     });
     user = await Prefs.getUser();
     if (user != null) {
-      pp('IntroMain: 🎽 🎽 🎽 Checking the user:  🎽 User is ${user.name}  🎽');
+      pp('IntroMain: 🎽 🎽 🎽 Checking the user:  🎽 User is ${user!.name!}  🎽');
       Navigator.pop(context);
       Navigator.push(
           context,
@@ -45,7 +45,7 @@ class _IntroMainState extends State<IntroMain> {
               type: PageTransitionType.scale,
               alignment: Alignment.topLeft,
               duration: Duration(seconds: 1),
-              child: DashboardMain(user: user)));
+              child: DashboardMain(user: user!)));
     } else {
       pp('IntroMain: 🎽 🎽 🎽 Checking the user:  🎽 User is NULL');
     }

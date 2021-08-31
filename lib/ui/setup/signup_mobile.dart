@@ -19,7 +19,7 @@ class SignupMobile extends StatefulWidget {
 
 class _SignupMobileState extends State<SignupMobile>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
+  late AnimationController _controller;
 
   @override
   void initState() {
@@ -95,7 +95,7 @@ class _SignupMobileState extends State<SignupMobile>
                             labelText: 'Organization Name',
                             labelStyle: Styles.blackSmall),
                         validator: (value) {
-                          if (value.isEmpty) {
+                          if (value!.isEmpty) {
                             return 'Please enter Organization Name';
                           }
                           return null;
@@ -109,7 +109,7 @@ class _SignupMobileState extends State<SignupMobile>
                             labelText: 'Organization Email',
                             labelStyle: Styles.blackSmall),
                         validator: (value) {
-                          if (value.isEmpty) {
+                          if (value!.isEmpty) {
                             return 'Please enter Organization Email';
                           }
                           return null;
@@ -123,7 +123,7 @@ class _SignupMobileState extends State<SignupMobile>
                             labelText: 'Organization Administrator',
                             labelStyle: Styles.blackSmall),
                         validator: (value) {
-                          if (value.isEmpty) {
+                          if (value!.isEmpty) {
                             return 'Please enter Administrator name';
                           }
                           return null;
@@ -137,7 +137,7 @@ class _SignupMobileState extends State<SignupMobile>
                             labelText: 'Administrator Email',
                             labelStyle: Styles.blackSmall),
                         validator: (value) {
-                          if (value.isEmpty) {
+                          if (value!.isEmpty) {
                             return 'Please enter Administrator email';
                           }
                           return null;
@@ -151,7 +151,7 @@ class _SignupMobileState extends State<SignupMobile>
                             labelText: 'Administrator Cellphone',
                             labelStyle: Styles.blackSmall),
                         validator: (value) {
-                          if (value.isEmpty) {
+                          if (value!.isEmpty) {
                             return 'Please enter Administrator cellphone';
                           }
                           return null;
@@ -198,7 +198,7 @@ class _SignupMobileState extends State<SignupMobile>
   var isBusy = false;
   var _key = GlobalKey<ScaffoldState>();
   void _submit() async {
-    if (_formState.currentState.validate()) {
+    if (_formState.currentState!.validate()) {
       pp('🎽 🎽 🎽 Start submission of Org and Admin......');
       setState(() {
         isBusy = true;
@@ -243,7 +243,7 @@ class _SignupMobileState extends State<SignupMobile>
             type: PageTransitionType.scale,
             alignment: Alignment.topLeft,
             duration: Duration(seconds: 1),
-            child: CreditCardHandlerMain(user: admin)));
+            child: CreditCardHandlerMain(user: admin!)));
 
     if (result != null) {
       pp('SignUpMobile:  😡 😡 😡 Credit card processing not quite done yet!  😡 😡 😡');
@@ -272,7 +272,7 @@ class _SignupMobileState extends State<SignupMobile>
   }
 
   Future<Organization> _createOrganization(User admin) async {
-    Country country = await Prefs.getCountry();
+    Country? country = await Prefs.getCountry();
     var org = Organization(
         name: nameController.text,
         countryId: country == null ? 'tbd' : country.countryId,

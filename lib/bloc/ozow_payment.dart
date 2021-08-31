@@ -7,7 +7,7 @@ class OzowPayment extends StatefulWidget {
 
 class _OzowPaymentState extends State<OzowPayment>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
+  late AnimationController _controller;
 
   @override
   void initState() {

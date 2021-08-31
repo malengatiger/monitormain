@@ -10,7 +10,7 @@ class TestOwzo extends StatefulWidget {
 
 class _TestOwzoState extends State<TestOwzo>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
+  late AnimationController _controller;
 
   @override
   void initState() {
@@ -19,8 +19,8 @@ class _TestOwzoState extends State<TestOwzo>
     sendPayment();
   }
 
-  String result;
-  bool busy;
+  String? result;
+  bool busy = false;
 
   @override
   void dispose() {
@@ -33,18 +33,18 @@ class _TestOwzoState extends State<TestOwzo>
       busy = true;
     });
     var req = OzowPaymentRequest(
-        siteCode: DotEnv.env['ozowSiteCode'],
-        countryCode: DotEnv.env['countryCode'],
+        siteCode: DotEnv.dotenv.env['ozowSiteCode'],
+        countryCode: DotEnv.dotenv.env['countryCode'],
         transactionReference: 'SUPERBOWL 2021',
-        currencyCode: DotEnv.env['currencyCode'],
+        currencyCode: DotEnv.dotenv.env['currencyCode'],
         bankReference: 'BANKREF1',
-        errorUrl: DotEnv.env['errorUrl'],
+        errorUrl: DotEnv.dotenv.env['errorUrl'],
         isTest: true,
         hashCheck: null,
-        notifyUrl: DotEnv.env['notifyUrl'],
-        successUrl: DotEnv.env['successUrl'],
+        notifyUrl: DotEnv.dotenv.env['notifyUrl'],
+        successUrl: DotEnv.dotenv.env['successUrl'],
         amount: 95.99,
-        cancelUrl: DotEnv.env['cancelUrl'],
+        cancelUrl: DotEnv.dotenv.env['cancelUrl'],
         customer: 'Customer One');
 
     req.hashCheck = OzowPaymentRequest.generateOzowHash(req);

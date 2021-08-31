@@ -34,7 +34,7 @@ void main() async {
     sound: true,
   );
   pp('$z app main: $m Firebase initialized !! $z');
-  await DotEnv.load(fileName: ".env");
+  await DotEnv.dotenv.load(fileName: ".env");
   runApp(MyApp());
 
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
@@ -47,7 +47,10 @@ class MyApp extends StatelessWidget {
     return StreamBuilder<int>(
         stream: themeBloc.newThemeStream,
         builder: (context, snapshot) {
-          var index = snapshot.data;
+          var index = 0;
+          if (snapshot.hasData) {
+            index = snapshot.data!;
+          }
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'Organization Boss',

@@ -12,29 +12,27 @@ import 'package:monitorlibrary/ui/credit_card/credit_card_handler.dart';
 import 'package:monitorlibrary/ui/media/list/media_list_main.dart';
 import 'package:monitorlibrary/ui/project_list/project_list_main.dart';
 import 'package:monitorlibrary/users/list/user_list_main.dart';
-import 'package:monitorlibrary/users/special_snack.dart';
 import 'package:monitormain/ui/intro/intro_main.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:universal_platform/universal_platform.dart';
 
 class DashboardMobile extends StatefulWidget {
   final mon.User user;
-  DashboardMobile({Key key, this.user}) : super(key: key);
+  DashboardMobile({Key? key, required this.user}) : super(key: key);
 
   @override
   _DashboardMobileState createState() => _DashboardMobileState();
 }
 
 class _DashboardMobileState extends State<DashboardMobile>
-    with SingleTickerProviderStateMixin
-    implements SpecialSnackListener {
-  AnimationController _controller;
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
   var isBusy = false;
   var _projects = <Project>[];
   var _users = <mon.User>[];
   var _photos = <Photo>[];
   var _videos = <Video>[];
-  mon.User _user;
+  mon.User? _user;
 
   @override
   void initState() {
@@ -55,7 +53,7 @@ class _DashboardMobileState extends State<DashboardMobile>
     super.dispose();
   }
 
-  var items = List<BottomNavigationBarItem>();
+  var items = <BottomNavigationBarItem>[];
   void _setItems() {
     items
         .add(BottomNavigationBarItem(icon: Icon(Icons.people), label: 'Users'));
@@ -118,14 +116,14 @@ class _DashboardMobileState extends State<DashboardMobile>
             child: Column(
               children: [
                 Text(
-                  widget.user == null ? '' : widget.user.organizationName,
+                  widget.user == null ? '' : widget.user.organizationName!,
                   style: Styles.blackBoldMedium,
                 ),
                 SizedBox(
                   height: 16,
                 ),
                 Text(
-                  widget.user == null ? '' : widget.user.name,
+                  widget.user == null ? '' : widget.user.name!,
                   style: Styles.whiteSmall,
                 ),
                 SizedBox(
@@ -178,7 +176,7 @@ class _DashboardMobileState extends State<DashboardMobile>
                                       stream: monitorBloc.projectStream,
                                       builder: (context, snapshot) {
                                         if (snapshot.hasData)
-                                          _projects = snapshot.data;
+                                          _projects = snapshot.data!;
                                         return Text(
                                           '${_projects.length}',
                                           style: Styles.blackBoldLarge,
@@ -209,7 +207,7 @@ class _DashboardMobileState extends State<DashboardMobile>
                                       stream: monitorBloc.usersStream,
                                       builder: (context, snapshot) {
                                         if (snapshot.hasData)
-                                          _users = snapshot.data;
+                                          _users = snapshot.data!;
                                         return Text(
                                           '${_users.length}',
                                           style: Styles.blackBoldLarge,
@@ -238,7 +236,7 @@ class _DashboardMobileState extends State<DashboardMobile>
                                     stream: monitorBloc.photoStream,
                                     builder: (context, snapshot) {
                                       if (snapshot.hasData)
-                                        _photos = snapshot.data;
+                                        _photos = snapshot.data!;
                                       return Text(
                                         '${_photos.length}',
                                         style: Styles.blackBoldLarge,
@@ -266,7 +264,7 @@ class _DashboardMobileState extends State<DashboardMobile>
                                     stream: monitorBloc.videoStream,
                                     builder: (context, snapshot) {
                                       if (snapshot.hasData)
-                                        _videos = snapshot.data;
+                                        _videos = snapshot.data!;
                                       return Text(
                                         '${_videos.length}',
                                         style: Styles.blackBoldLarge,
@@ -373,51 +371,51 @@ class _DashboardMobileState extends State<DashboardMobile>
         if (mounted) {
           pp('DashboardMobile: 🍎 🍎 showProjectSnackbar: ${project.name} ... 🍎 🍎');
           _projects = await monitorBloc.getOrganizationProjects(
-              organizationId: _user.organizationId, forceRefresh: false);
+              organizationId: _user!.organizationId!, forceRefresh: false);
           setState(() {});
-          SpecialSnack.showProjectSnackbar(
-              scaffoldKey: _key,
-              textColor: Colors.white,
-              backgroundColor: Theme.of(context).primaryColor,
-              project: project,
-              listener: this);
+          // SpecialSnack.showProjectSnackbar(
+          //     scaffoldKey: _key,
+          //     textColor: Colors.white,
+          //     backgroundColor: Theme.of(context).primaryColor,
+          //     project: project,
+          //     listener: this);
         }
       });
       fcmBloc.userStream.listen((User user) async {
         if (mounted) {
           pp('DashboardMobile: 🍎 🍎 showUserSnackbar: ${user.name} ... 🍎 🍎');
           _users = await monitorBloc.getOrganizationUsers(
-              organizationId: _user.organizationId, forceRefresh: false);
+              organizationId: _user!.organizationId!, forceRefresh: false);
           setState(() {});
-          SpecialSnack.showUserSnackbar(
-              scaffoldKey: _key, user: user, listener: this);
+          // SpecialSnack.showUserSnackbar(
+          //     scaffoldKey: _key, user: user, listener: this);
         }
       });
       fcmBloc.photoStream.listen((Photo photo) async {
         if (mounted) {
           pp('DashboardMobile: 🍎 🍎 showPhotoSnackbar: ${photo.userName} ... 🍎 🍎');
           _photos = await monitorBloc.getOrganizationPhotos(
-              organizationId: _user.organizationId, forceRefresh: false);
+              organizationId: _user!.organizationId!, forceRefresh: false);
           setState(() {});
-          SpecialSnack.showPhotoSnackbar(
-              scaffoldKey: _key, photo: photo, listener: this);
+          // SpecialSnack.showPhotoSnackbar(
+          //     scaffoldKey: _key, photo: photo, listener: this);
         }
       });
       fcmBloc.videoStream.listen((Video video) async {
         if (mounted) {
           pp('DashboardMobile: 🍎 🍎 showVideoSnackbar: ${video.userName} ... 🍎 🍎');
           _videos = await monitorBloc.getOrganizationVideos(
-              organizationId: _user.organizationId, forceRefresh: false);
-          SpecialSnack.showVideoSnackbar(
-              scaffoldKey: _key, video: video, listener: this);
+              organizationId: _user!.organizationId!, forceRefresh: false);
+          // SpecialSnack.showVideoSnackbar(
+          //     scaffoldKey: _key, video: video, listener: this);
         }
       });
       fcmBloc.messageStream.listen((mon.OrgMessage message) {
         if (mounted) {
           pp('DashboardMobile: 🍎 🍎 showMessageSnackbar: ${message.message} ... 🍎 🍎');
 
-          SpecialSnack.showMessageSnackbar(
-              scaffoldKey: _key, message: message, listener: this);
+          // SpecialSnack.showMessageSnackbar(
+          //     scaffoldKey: _key, message: message, listener: this);
         }
       });
     } else {
@@ -431,6 +429,6 @@ class _DashboardMobileState extends State<DashboardMobile>
 
   @override
   onClose() {
-    ScaffoldMessenger.of(_key.currentState.context).removeCurrentSnackBar();
+    ScaffoldMessenger.of(_key.currentState!.context).removeCurrentSnackBar();
   }
 }

@@ -1,25 +1,25 @@
 import 'dart:convert';
 
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart' as dot;
 import 'package:http/http.dart' as http;
 import 'package:monitorlibrary/auth/app_auth.dart';
 import 'package:monitorlibrary/functions.dart';
 
 class NetUtil {
-  static String activeURL;
+  static String? activeURL;
   static bool isDevelopmentStatus = true;
-  static String url;
+  static String? url;
   static Map<String, String> headers = {
     'Content-type': 'application/json',
     'Accept': 'application/json',
   };
   static Future ping() async {
-    String mURL = await getUrl();
-    var result = await _callWebAPIGet(mURL + 'ping');
+    String? mURL = await getUrl();
+    var result = await _callWebAPIGet(mURL! + 'ping');
     pp('DataAPI: 🔴 🔴 🔴 ping: $result');
   }
 
-  static Future _callWebAPIPost(String mUrl, Map bag) async {
+  static Future _callWebAPIPost(String mUrl, Map? bag) async {
     pp('\n\n🏈 🏈 🏈 🏈 🏈 NetUtil_callWebAPIPost:  🔆 🔆 🔆 🔆 calling : 💙  $mUrl  💙 ');
     var mBag;
     if (bag != null) {
@@ -91,19 +91,19 @@ class NetUtil {
     }
   }
 
-  static Future<String> getUrl() async {
+  static Future<String?> getUrl() async {
     if (url == null) {
       pp('🐤🐤🐤🐤 Getting url via .env settings: ${url == null ? 'NO URL YET' : url}');
-      String status = env['status'];
+      String? status = dot.dotenv.env['status'];
       pp('🐤🐤🐤🐤 DataAPI: getUrl: Status from .env: $status');
       if (status == 'dev') {
         isDevelopmentStatus = true;
-        url = env['devURL'];
+        url = dot.dotenv.env['devURL'];
         pp(' 🌎 🌎 🌎 DataAPI: Status of the app is  DEVELOPMENT 🌎 🌎 🌎 $url');
         return url;
       } else {
         isDevelopmentStatus = false;
-        url = env['prodURL'];
+        url = dot.dotenv.env['prodURL'];
         pp(' 🌎 🌎 🌎 DataAPI: Status of the app is PRODUCTION 🌎 🌎 🌎 $url');
         return url;
       }

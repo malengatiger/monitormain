@@ -9,16 +9,16 @@ import 'package:monitormain/ui/setup/signup_main.dart';
 import 'package:page_transition/page_transition.dart';
 
 class IntroTablet extends StatefulWidget {
-  final User user;
-  IntroTablet({Key key, this.user}) : super(key: key);
+  final User? user;
+  IntroTablet({Key? key, this.user}) : super(key: key);
   @override
   _IntroTabletState createState() => _IntroTabletState();
 }
 
 class _IntroTabletState extends State<IntroTablet>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  User user;
+  late AnimationController _controller;
+  User? user;
 
   var mList = <PageViewModel>[];
   void _buildPages(BuildContext context) {
@@ -145,8 +145,8 @@ class _IntroTabletState extends State<IntroTablet>
                           ),
                         ],
                       )
-                    : Text(
-                        user.name,
+                    : Text(user == null? '' :
+                        user!.name!,
                         style: Styles.blackBoldSmall,
                       ),
                 SizedBox(

@@ -9,16 +9,16 @@ import 'package:monitormain/ui/setup/signup_mobile.dart';
 import 'package:page_transition/page_transition.dart';
 
 class IntroMobile extends StatefulWidget {
-  final User user;
-  IntroMobile({Key key, this.user}) : super(key: key);
+  final User? user;
+  IntroMobile({Key? key, this.user}) : super(key: key);
   @override
   _IntroMobileState createState() => _IntroMobileState();
 }
 
 class _IntroMobileState extends State<IntroMobile>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  User user;
+  late AnimationController _controller;
+  User? user;
 
   var lorem =
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac sagittis lectus. Aliquam dictum elementum massa, '
@@ -126,7 +126,7 @@ class _IntroMobileState extends State<IntroMobile>
                         ],
                       )
                     : Text(
-                        user.name,
+                        user!.name!,
                         style: Styles.blackBoldSmall,
                       ),
                 SizedBox(
@@ -175,15 +175,13 @@ class _IntroMobileState extends State<IntroMobile>
   }
 
   void _navigateToDashboard(BuildContext context) {
-    if (widget.user != null) {
-      Navigator.push(
-          context,
-          PageTransition(
-              type: PageTransitionType.scale,
-              alignment: Alignment.topLeft,
-              duration: Duration(seconds: 1),
-              child: DashboardMain(user: widget.user)));
-    }
+    Navigator.push(
+        context,
+        PageTransition(
+            type: PageTransitionType.scale,
+            alignment: Alignment.topLeft,
+            duration: Duration(seconds: 1),
+            child: DashboardMain(user: widget.user)));
   }
 
   void _navigateToSignUp() async {

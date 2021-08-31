@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/android.iml" filepath="$PROJECT_DIR$/.idea/android.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/android.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/android.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1233078739/android.connectivity.iml" filepath="$PROJECT_DIR$/.idea/modules/-1233078739/android.connectivity.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/-2054699403/android.google_api_headers.iml" filepath="$PROJECT_DIR$/.idea/modules/-2054699403/android.google_api_headers.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/-2119174702/android.intent.iml" filepath="$PROJECT_DIR$/.idea/modules/-2119174702/android.intent.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/-309531480/android.package_info.iml" filepath="$PROJECT_DIR$/.idea/modules/-309531480/android.package_info.iml" />

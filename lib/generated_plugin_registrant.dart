@@ -9,6 +9,7 @@ import 'package:firebase_auth_web/firebase_auth_web.dart';
 import 'package:firebase_core_web/firebase_core_web.dart';
 import 'package:firebase_messaging_web/firebase_messaging_web.dart';
 import 'package:firebase_storage_web/firebase_storage_web.dart';
+import 'package:fluttertoast/fluttertoast_web.dart';
 import 'package:geolocator_web/geolocator_web.dart';
 import 'package:package_info_plus_web/package_info_plus_web.dart';
 import 'package:shared_preferences_web/shared_preferences_web.dart';
@@ -24,6 +25,7 @@ void registerPlugins(Registrar registrar) {
   FirebaseCoreWeb.registerWith(registrar);
   FirebaseMessagingWeb.registerWith(registrar);
   FirebaseStorageWeb.registerWith(registrar);
+  FluttertoastWebPlugin.registerWith(registrar);
   GeolocatorPlugin.registerWith(registrar);
   PackageInfoPlugin.registerWith(registrar);
   SharedPreferencesPlugin.registerWith(registrar);

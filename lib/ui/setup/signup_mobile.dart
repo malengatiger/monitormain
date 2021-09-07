@@ -160,6 +160,38 @@ class _SignupMobileState extends State<SignupMobile>
                       SizedBox(
                         height: 28,
                       ),
+                      Container(
+                        color: Colors.amber[50],
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Radio(
+                              value: 0,
+                              groupValue: genderType,
+                              onChanged: _handleGenderValueChange,
+                            ),
+                            Text(
+                              'Male',
+                              style: Styles.blackTiny,
+                            ),
+                            Radio(
+                              value: 1,
+                              groupValue: genderType,
+                              onChanged: _handleGenderValueChange,
+                            ),
+                            Text('Female', style: Styles.blackTiny),
+                            // Radio(
+                            //   value: 2,
+                            //   groupValue: gender,
+                            //   onChanged: _handleGenderValueChange,
+                            // ),
+                            // Text(
+                            //   'Other',
+                            //   style: Styles.blackTiny,
+                            // ),
+                          ],
+                        ),
+                      ),
                       isBusy
                           ? Container(
                               height: 24,
@@ -195,6 +227,24 @@ class _SignupMobileState extends State<SignupMobile>
     );
   }
 
+  int genderType = -1;
+  String? gender;
+  void _handleGenderValueChange(Object? value) {
+    pp('🌸 🌸 🌸 🌸 🌸 _handleGenderValueChange: 🌸 $value');
+    setState(() {
+      switch (value) {
+        case 0:
+          gender = 'Male';
+          break;
+        case 1:
+          gender = 'Female';
+          break;
+        case 2:
+          gender = 'Other';
+          break;
+      }
+    });
+  }
   var isBusy = false;
   var _key = GlobalKey<ScaffoldState>();
   void _submit() async {
@@ -251,6 +301,7 @@ class _SignupMobileState extends State<SignupMobile>
     _navigateToDashboard(admin);
   }
 
+
   Future<User> _createAdministrator() async {
     var uuid = Uuid();
     var admin = User(
@@ -259,6 +310,7 @@ class _SignupMobileState extends State<SignupMobile>
         cellphone: adminCellphoneController.text,
         created: DateTime.now().toIso8601String(),
         userType: ORG_ADMINISTRATOR,
+        gender: gender,
         organizationName: nameController.text,
         organizationId: uuid.v4(),
         userId: uuid.v4());

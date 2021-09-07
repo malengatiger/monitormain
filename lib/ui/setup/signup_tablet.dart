@@ -98,6 +98,7 @@ class _SignUpTabletState extends State<SignUpTablet>
     _navigateToDashboard(admin);
   }
 
+  String gender = 'Male';
   Future<User> _createAdministrator() async {
     var uuid = Uuid();
     var admin = User(
@@ -106,6 +107,7 @@ class _SignUpTabletState extends State<SignUpTablet>
         cellphone: adminCellphoneController.text,
         created: DateTime.now().toIso8601String(),
         userType: ORG_ADMINISTRATOR,
+        gender: gender,
         organizationName: nameController.text,
         organizationId: uuid.v4(),
         userId: uuid.v4());

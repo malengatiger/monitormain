@@ -116,14 +116,14 @@ class _DashboardMobileState extends State<DashboardMobile>
             child: Column(
               children: [
                 Text(
-                  widget.user == null ? '' : widget.user.organizationName!,
+                  widget.user.organizationName!,
                   style: Styles.blackBoldMedium,
                 ),
                 SizedBox(
                   height: 16,
                 ),
                 Text(
-                  widget.user == null ? '' : widget.user.name!,
+                  widget.user.name!,
                   style: Styles.whiteSmall,
                 ),
                 SizedBox(
@@ -148,10 +148,10 @@ class _DashboardMobileState extends State<DashboardMobile>
         body: isBusy
             ? Center(
                 child: Container(
-                  height: 48,
-                  width: 48,
+                  height: 16,
+                  width: 16,
                   child: CircularProgressIndicator(
-                    strokeWidth: 8,
+                    strokeWidth: 4,
                     backgroundColor: Colors.teal,
                   ),
                 ),
@@ -427,8 +427,5 @@ class _DashboardMobileState extends State<DashboardMobile>
   static const BLUE =
       '🔵 🔵 🔵 DashboardMain:  🦠  🦠  🦠 FCM message arrived:  🦠 ';
 
-  @override
-  onClose() {
-    ScaffoldMessenger.of(_key.currentState!.context).removeCurrentSnackBar();
-  }
+
 }

@@ -28,9 +28,9 @@ class _IntroMobileState extends State<IntroMobile>
   void _buildPages(BuildContext context) {
     var page1 = PageViewModel(
       titleWidget: Text(
-        "Welcome to The Visual Monitor",
+        "Welcome to The Digital Monitor",
         style: TextStyle(
-            fontSize: Styles.medium, color: Theme.of(context).primaryColor),
+            fontSize: Styles.medium, color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),
       ),
       bodyWidget: Text(
         "$lorem",
@@ -45,7 +45,7 @@ class _IntroMobileState extends State<IntroMobile>
       titleWidget: Text(
         "Field Monitors are people too",
         style: TextStyle(
-            fontSize: Styles.medium, color: Theme.of(context).primaryColor),
+            fontSize: Styles.medium, color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),
       ),
       bodyWidget: Text(
         "$lorem",
@@ -55,9 +55,9 @@ class _IntroMobileState extends State<IntroMobile>
     );
     var page3 = PageViewModel(
       titleWidget: Text(
-        "Thank you for using VisualMonitor",
+        "Start using The Digital Monitor",
         style: TextStyle(
-            fontSize: Styles.medium, color: Theme.of(context).primaryColor),
+            fontSize: Styles.medium, color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),
       ),
       bodyWidget: Text(
         "$lorem",
@@ -95,9 +95,10 @@ class _IntroMobileState extends State<IntroMobile>
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            'The Visual Monitor',
+            'Digital Monitor',
             style: Styles.whiteSmall,
           ),
+
           bottom: PreferredSize(
             child: Column(
               children: [
@@ -127,48 +128,55 @@ class _IntroMobileState extends State<IntroMobile>
                       )
                     : Text(
                         user!.name!,
-                        style: Styles.blackBoldSmall,
+                        style: Styles.blackBoldMedium,
                       ),
                 SizedBox(
-                  height: 16,
+                  height: 24,
                 )
               ],
             ),
-            preferredSize: Size.fromHeight(40),
+            preferredSize: Size.fromHeight(60),
           ),
         ),
-        body: Stack(
-          children: [
-            IntroductionScreen(
-              pages: mList,
-              onDone: () {
-                _navigateToDashboard(context);
-              },
-              onSkip: () {
-                _navigateToDashboard(context);
-              },
-              showSkipButton: false,
-              skip: const Icon(Icons.skip_next),
-              next: const Icon(Icons.arrow_forward),
-              done: user == null
-                  ? Container()
-                  : Text("Done",
-                      style: TextStyle(
-                        color: Theme.of(context).primaryColor,
-                        fontWeight: FontWeight.w600,
-                      )),
-              dotsDecorator: DotsDecorator(
-                size: const Size.square(10.0),
-                activeSize: const Size(20.0, 10.0),
-                activeColor: Theme.of(context).primaryColor,
-                color: Colors.black26,
-                spacing: const EdgeInsets.symmetric(horizontal: 3.0),
-                activeShape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25.0),
+        backgroundColor: Colors.brown[100],
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Stack(
+            children: [
+              IntroductionScreen(
+                pages: mList,
+                globalBackgroundColor: Colors.amber[50],
+                showNextButton: true,
+                onDone: () {
+                  _navigateToDashboard(context);
+                },
+                onSkip: () {
+                  _navigateToDashboard(context);
+                },
+                showSkipButton: false,
+                skip: const Icon(Icons.skip_next),
+                next: const Icon(Icons.arrow_forward),
+                done: user == null
+                    ? Container()
+                    : Text("Done",
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.w900, fontSize: 16
+                        )),
+                dotsDecorator: DotsDecorator(
+                  size: const Size.square(10.0),
+                  activeSize: const Size(20.0, 10.0),
+                  activeColor: Theme.of(context).primaryColor,
+                  color: Colors.black26,
+                  spacing: const EdgeInsets.symmetric(horizontal: 3.0),
+                  activeShape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25.0),
+                  ),
                 ),
+                color: Colors.blue,
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -124,7 +124,7 @@ class _DashboardMobileState extends State<DashboardMobile>
                 ),
                 Text(
                   widget.user.name!,
-                  style: Styles.whiteSmall,
+                  style: Styles.whiteBoldMedium,
                 ),
                 SizedBox(
                   height: 2,
